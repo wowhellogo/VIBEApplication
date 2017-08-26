@@ -1,4 +1,14 @@
 <resources>
+    <style name="style_setup_btn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/common_primary_bg</item>
+        <item name="android:drawablePadding">@dimen/margin_10</item>
+        <item name="android:paddingTop">@dimen/margin_10</item>
+        <item name="android:paddingBottom">@dimen/margin_10</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:paddingLeft">@dimen/margin_20</item>
 
+    </style>
 
 </resources>

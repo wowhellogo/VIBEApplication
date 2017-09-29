@@ -3,6 +3,7 @@
           package="com.vibe.app">
 
     <application
+        android:name=".VibeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,12 +22,18 @@
             android:name=".PairToVibeActivity"
             android:configChanges="orientation"
             android:launchMode="singleTop"/>
-        <!--选择模式-->
+        <!-- 选择模式 -->
         <activity
             android:name=".ReadyToVibeActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTop"
-            />
+            android:launchMode="singleTop"/>
+
+        <!--调整模式-->
+        <activity
+            android:name=".UpdateVibeTypeActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"/>
+
     </application>
 
 </manifest>

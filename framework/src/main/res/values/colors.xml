@@ -26,5 +26,7 @@
     <color name="adapter_divider">#dedede</color>
     <color name="adapter_line">#dedede</color>
 
+    <color name="vibe_line">#ff1b9cff</color>
+
 
 </resources>

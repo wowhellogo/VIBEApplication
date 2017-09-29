@@ -8,13 +8,31 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hao.common.base.BaseActivity;
+import com.hao.common.rx.RxUtil;
+import com.hao.common.utils.SPUtil;
+import com.hao.common.utils.ToastUtil;
 import com.hao.common.widget.titlebar.TitleBar;
+import com.vibe.app.database.AbstractDatabaseManager;
+import com.vibe.app.model.VibeType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.dao.AbstractDao;
+import rx.Observable;
+import rx.functions.Action1;
 
 public class MainActivity extends BaseActivity {
+
+    private AbstractDatabaseManager<VibeType, Long> mDatabaseManager = new AbstractDatabaseManager<VibeType, Long>() {
+        @Override
+        public AbstractDao<VibeType, Long> getAbstractDao() {
+            return daoSession.getVibeTypeDao();
+        }
+    };
 
     @Bind(R.id.tv_pair_to_vibe)
     TextView mTvPairToVibe;
@@ -45,7 +63,7 @@ public class MainActivity extends BaseActivity {
         toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        insertDate();
     }
 
     @Override
@@ -60,6 +78,27 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+
+    }
+
+    public void insertDate() {
+        if (!SPUtil.getBoolean("insert", false)) {
+            List<VibeType> list = new ArrayList<>();
+            list.add(new VibeType(1l, "advice of orthovibe", R.mipmap.ic_choice_orthovybe, 1, 1));
+            list.add(new VibeType(2l, "vibration", R.mipmap.ic_choice_vibration, 1, 1));
+            list.add(new VibeType(3l, "wave", R.mipmap.ic_choice_wave, 1, 1));
+            list.add(new VibeType(4l, "pulse", R.mipmap.ic_choice_pulse, 1, 1));
+            Observable.just(mDatabaseManager.insertOrReplaceList(list))
+                    .compose(RxUtil.applySchedulersJobUI())
+                    .compose(bindToLifecycle())
+                    .subscribe(new Action1<Boolean>() {
+                        @Override
+                        public void call(Boolean aBoolean) {
+                            ToastUtil.show("初始化成功");
+                            SPUtil.putBoolean("insert", true);
+                        }
+                    });
+        }
 
     }
 
@@ -101,16 +140,23 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_pair_to_vibe:
                 mSwipeBackHelper.forward(PairToVibeActivity.class);
+                onClickLeftCtv();
                 break;
             case R.id.tv_ready_to_vieb:
+                mSwipeBackHelper.forward(ReadyToVibeActivity.class);
+                onClickLeftCtv();
                 break;
             case R.id.tv_set_reminder:
+                onClickLeftCtv();
                 break;
             case R.id.tv_history:
+                onClickLeftCtv();
                 break;
             case R.id.tv_languages:
+                onClickLeftCtv();
                 break;
             case R.id.tv_about:
+                onClickLeftCtv();
                 break;
         }
     }

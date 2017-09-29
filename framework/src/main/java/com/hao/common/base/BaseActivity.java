@@ -38,7 +38,8 @@ import rx.functions.Action1;
  * @创 建 人: linguoding 邮箱：linggoudingg@gmail.com
  * @日 期: 2016年12月14日  11:31
  */
-public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppCompatActivity<P> implements TitleBar.Delegate, EasyPermissions.PermissionCallbacks, SwipeBackHelper.Delegate {
+public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppCompatActivity<P> implements
+        TitleBar.Delegate, EasyPermissions.PermissionCallbacks, SwipeBackHelper.Delegate {
     protected MaterialDialog mLoadingDialog;
 
     protected Toolbar mToolbar;
@@ -78,6 +79,11 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
         } else if (getTopBarType() == TopBarType.ToolBar) {
             initToolbarContentView();
         }
+        bindView();
+    }
+
+    protected void bindView() {
+
     }
 
 

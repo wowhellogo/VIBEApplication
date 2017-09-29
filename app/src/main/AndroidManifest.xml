@@ -17,6 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PairToVibeActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"/>
+        <!--选择模式-->
+        <activity
+            android:name=".ReadyToVibeActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"
+            />
     </application>
 
 </manifest>

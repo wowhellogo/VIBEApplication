@@ -73,6 +73,10 @@ dependencies {
     //Material-ish Progress
     compile 'com.pnikosis:materialish-progress:1.7'
 
+
+    // ButterKnife
+    compile 'com.jakewharton:butterknife:7.0.1'
+
     //Android 和 Java 内存泄露检测
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'

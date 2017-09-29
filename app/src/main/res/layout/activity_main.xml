@@ -25,40 +25,57 @@
         <View style="@style/HLine"/>
 
         <TextView
+            android:id="@+id/tv_pair_to_vibe"
             style="@style/style_setup_btn"
             android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:text="Pair to vibe"
             />
+
         <View style="@style/HLine"/>
+
         <TextView
+            android:id="@+id/tv_ready_to_vieb"
             style="@style/style_setup_btn"
-            android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:drawableLeft="@mipmap/ic_setup_choice"
+            android:text="Ready to vibe"
             />
+
         <View style="@style/HLine"/>
+
         <TextView
+            android:id="@+id/tv_set_reminder"
             style="@style/style_setup_btn"
-            android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:drawableLeft="@mipmap/ic_setup_remind"
+            android:text="Set reminder"
             />
+
         <View style="@style/HLine"/>
+
         <TextView
+            android:id="@+id/tv_history"
             style="@style/style_setup_btn"
-            android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:drawableLeft="@mipmap/ic_setup_history"
+            android:text="History"
             />
+
         <View style="@style/HLine"/>
+
         <TextView
+            android:id="@+id/tv_languages"
             style="@style/style_setup_btn"
-            android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:drawableLeft="@mipmap/ic_setup_language"
+            android:text="Languages"
             />
+
         <View style="@style/HLine"/>
+
         <TextView
+            android:id="@+id/tv_about"
             style="@style/style_setup_btn"
-            android:drawableLeft="@mipmap/ic_setup_pair"
-            android:text="测试"
+            android:drawableLeft="@mipmap/ic_setup_aboutus"
+            android:text="About"
             />
+
         <View style="@style/HLine"/>
     </LinearLayout>
 

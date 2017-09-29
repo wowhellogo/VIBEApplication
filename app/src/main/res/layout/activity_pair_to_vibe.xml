@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@mipmap/pic_pair_bg"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+    >
+
+    <com.hao.common.widget.titlebar.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBar.NoBack"
+        android:background="@android:color/transparent"
+        app:bgatitlebar_titleText="Pair to vibe"
+        app:bgatitlebar_titleTextColor="@color/colorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5"
+        android:text="@string/tip_pair_to_vibe"
+        android:textColor="#171717"
+        android:textSize="@dimen/text_size_14"
+        />
+
+    <ImageView
+        android:id="@+id/im_pair"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_30"
+        android:src="@mipmap/ic_pair"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30"
+        android:text="Only pair to one smart hpone"
+        android:textColor="#171717"
+        android:textSize="@dimen/text_size_14"
+        />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/selector_pair_btn"
+        android:padding="@dimen/margin_10"
+        android:gravity="center"
+        android:text="pair Orthe-Vibe"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/selector_pair_btn"
+        android:gravity="center"
+        android:padding="@dimen/margin_10"
+        android:text="exlore"
+        android:textColor="@android:color/white"
+        />
+
+
+</LinearLayout>

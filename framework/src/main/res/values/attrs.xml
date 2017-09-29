@@ -140,7 +140,7 @@
     <declare-styleable name="RadarScanView">
         <attr name="circleColor" format="color|reference"/>
         <attr name="ringColor" format="color|reference"/>
-        <attr name="lineColor" format="color|reference"/>
+        <attr name="scanLineColor" format="color|reference"/>
         <attr name="headColor" format="color|reference"/>
         <attr name="tailColor" format="color|reference"/>
     </declare-styleable>
@@ -256,6 +256,26 @@
     <declare-styleable name="titleLyaout">
         <attr name="titleColor" format="color|reference"></attr>
         <attr name="titleText" format="string|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="VibeProgressbarView">
+        <attr name="aboveWaveColor" format="color"/>
+        <attr name="blowWaveColor" format="color"/>
+        <attr name="aboveRectColor" format="color"/>
+        <attr name="blowRectColor" format="color"/>
+        <attr name="progress" format="integer"/>
+        <attr name="startNum" format="integer"/>
+        <attr name="endNum" format="integer"/>
+        <attr name="numTextSize" format="dimension"/>
+        <attr name="numTextColor" format="color"/>
+        <attr name="lineColor" format="color"/>
+        <!--浪谷的数量-->
+        <attr name="peakValleyCount" format="integer"></attr>
+        <attr name="type" format="enum">
+            <enum name="rect" value="1"/>
+            <enum name="wave" value="2"/>
+        </attr>
+
     </declare-styleable>
 
 

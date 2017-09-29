@@ -94,7 +94,7 @@ public class RadarScanView extends View {
         final TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RadarScanView, defStyle, 0);
         circleColor = typedArray.getColor(R.styleable.RadarScanView_circleColor, Color.parseColor("#30B1A2"));
         ringColor = typedArray.getColor(R.styleable.RadarScanView_ringColor, Color.parseColor("#40C3B3"));
-        lineColor = typedArray.getColor(R.styleable.RadarScanView_lineColor, Color.parseColor("#40C3B3"));
+        lineColor = typedArray.getColor(R.styleable.RadarScanView_scanLineColor, Color.parseColor("#40C3B3"));
         headColor = typedArray.getColor(R.styleable.RadarScanView_headColor, Color.parseColor("#ccffffff"));
         tailColor = typedArray.getColor(R.styleable.RadarScanView_tailColor, Color.parseColor("#00ffffff"));
         typedArray.recycle();

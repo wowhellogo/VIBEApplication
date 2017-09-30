@@ -13,9 +13,12 @@ import com.hao.common.utils.SPUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.widget.titlebar.TitleBar;
 import com.vibe.app.database.AbstractDatabaseManager;
+import com.vibe.app.model.Reminder;
+import com.vibe.app.model.VibeRecord;
 import com.vibe.app.model.VibeType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,6 +36,21 @@ public class MainActivity extends BaseActivity {
             return daoSession.getVibeTypeDao();
         }
     };
+
+    private AbstractDatabaseManager<VibeRecord, Long> mvibeRecordDatabaseManager = new AbstractDatabaseManager<VibeRecord, Long>() {
+        @Override
+        public AbstractDao<VibeRecord, Long> getAbstractDao() {
+            return daoSession.getVibeRecordDao();
+        }
+    };
+
+    private AbstractDatabaseManager<Reminder, Long> reminderDatabaseManager = new AbstractDatabaseManager<Reminder, Long>() {
+        @Override
+        public AbstractDao<Reminder, Long> getAbstractDao() {
+            return daoSession.getReminderDao();
+        }
+    };
+
 
     @Bind(R.id.tv_pair_to_vibe)
     TextView mTvPairToVibe;
@@ -84,11 +102,25 @@ public class MainActivity extends BaseActivity {
     public void insertDate() {
         if (!SPUtil.getBoolean("insert", false)) {
             List<VibeType> list = new ArrayList<>();
-            list.add(new VibeType(1l, "advice of orthovibe", R.mipmap.ic_choice_orthovybe, 1, 1,true));
-            list.add(new VibeType(2l, "vibration", R.mipmap.ic_choice_vibration, 1, 1,false));
-            list.add(new VibeType(3l, "wave", R.mipmap.ic_choice_wave, 1, 1,false));
-            list.add(new VibeType(4l, "pulse", R.mipmap.ic_choice_pulse, 1, 1,false));
-            Observable.just(mDatabaseManager.insertOrReplaceList(list))
+            list.add(new VibeType(1L, "advice of orthovibe", R.mipmap.ic_choice_orthovybe, 1, 1, true));
+            list.add(new VibeType(2L, "vibration", R.mipmap.ic_choice_vibration, 1, 1, false));
+            list.add(new VibeType(3L, "wave", R.mipmap.ic_choice_wave, 1, 1, false));
+            list.add(new VibeType(4L, "pulse", R.mipmap.ic_choice_pulse, 1, 1, false));
+
+            List<VibeRecord> recordList = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                if (i % 2 == 0) {
+                    recordList.add(new VibeRecord((long) i, i, new Date(), new Date(), 2L));
+                } else if (i % 3 == 0) {
+                    recordList.add(new VibeRecord((long) i, i, new Date(), new Date(), 3L));
+                } else if (i % 5 == 0) {
+                    recordList.add(new VibeRecord((long) i, i, new Date(), new Date(), 1L));
+                } else {
+                    recordList.add(new VibeRecord((long) i, i, new Date(), new Date(), 4L));
+                }
+            }
+
+            Observable.just(mDatabaseManager.insertOrReplaceList(list) && mvibeRecordDatabaseManager.insertList(recordList))
                     .compose(RxUtil.applySchedulersJobUI())
                     .compose(bindToLifecycle())
                     .subscribe(aBoolean -> {
@@ -144,9 +176,11 @@ public class MainActivity extends BaseActivity {
                 onClickLeftCtv();
                 break;
             case R.id.tv_set_reminder:
+                mSwipeBackHelper.forward(ReminderListActivity.class);
                 onClickLeftCtv();
                 break;
             case R.id.tv_history:
+                mSwipeBackHelper.forward(VibeRecordListActivity.class);
                 onClickLeftCtv();
                 break;
             case R.id.tv_languages:

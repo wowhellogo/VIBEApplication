@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Entity mapped to table "VIBE_TYPE".
  */
-public class VibeType implements Serializable{
+public class VibeType implements Serializable {
 
     private Long _id;
     private String name;

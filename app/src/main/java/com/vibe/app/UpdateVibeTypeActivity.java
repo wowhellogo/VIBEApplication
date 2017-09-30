@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.hao.common.base.BaseActivity;
 import com.hao.common.base.TopBarType;
+import com.hao.common.manager.AppManager;
 import com.hao.common.widget.wheel.WheelView;
 import com.vibe.app.model.VibeType;
 
@@ -74,12 +75,13 @@ public class UpdateVibeTypeActivity extends BaseActivity implements View.OnClick
 
             @Override
             protected String getItem(int index) {
-                return String.valueOf(index + 1);
+                return String.valueOf(index);
             }
+
         };
         mWvNumber.setAdapter(adapter);
         mWvNumber.setCurrentItem(20);
-        mTvTime.setText("time:20minute");
+        mTvTime.setText(getString(R.string.time_20min));
     }
 
     @Override
@@ -87,8 +89,7 @@ public class UpdateVibeTypeActivity extends BaseActivity implements View.OnClick
         mWvNumber.setOnItemSelectedListener(new WheelView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
-                index += 1;
-                mTvTime.setText("time:" + index + "minute");
+                mTvTime.setText("time:" + index + "min");
             }
         });
         mTvOk.setOnClickListener(this);

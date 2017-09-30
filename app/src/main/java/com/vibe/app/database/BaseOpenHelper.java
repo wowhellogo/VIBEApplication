@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.vibe.app.dao.DaoMaster;
+import com.vibe.app.dao.ReminderDao;
 import com.vibe.app.dao.VibeRecordDao;
 import com.vibe.app.dao.VibeTypeDao;
 
@@ -27,8 +28,9 @@ public class BaseOpenHelper extends DaoMaster.OpenHelper {
                 // SchoolDao.createTable(db, true);
                 // 加入新字段
                 // db.execSQL("ALTER TABLE 'moments' ADD 'audio_path' TEXT;");
-                VibeTypeDao.createTable(db,true);
-                VibeRecordDao.createTable(db,true);
+                VibeTypeDao.createTable(db, true);
+                VibeRecordDao.createTable(db, true);
+                ReminderDao.createTable(db, true);
                 // TODO
                 break;
         }

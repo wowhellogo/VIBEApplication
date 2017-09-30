@@ -28,12 +28,30 @@
             android:configChanges="orientation"
             android:launchMode="singleTop"/>
 
-        <!--调整模式-->
+        <!-- 调整模式 -->
         <activity
             android:name=".UpdateVibeTypeActivity"
             android:configChanges="orientation"
             android:launchMode="singleTop"/>
 
+        <!-- 纪录 -->
+        <activity
+            android:name=".VibeRecordListActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"/>
+        <!-- 广播接收器 -->
+        <receiver android:name=".alarmmanager.clock.LoongggAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.vibe.app.alarm.clock"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- 闹钟界面 -->
+        <activity
+            android:name=".alarmmanager.clock.ClockAlarmActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name=".ReminderListActivity">
+        </activity>
     </application>
 
 </manifest>

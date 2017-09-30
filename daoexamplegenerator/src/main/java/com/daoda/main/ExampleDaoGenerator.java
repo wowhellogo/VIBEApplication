@@ -34,6 +34,19 @@ public class ExampleDaoGenerator {
 
         //一条纪录对应一种模式
         vibeRecordTable.addToOne(vibeTypeTable, vibeTypeId_fk);
+
+
+        Entity reminderTable = schema.addEntity("Reminder");
+        reminderTable.addLongProperty("_id").primaryKey().autoincrement().index();//主键
+        reminderTable.addStringProperty("name");
+        reminderTable.addIntProperty("flag");//标识，0：一次性的闹钟，1：每天的闹钟，2：每周提醒的闹钟
+        reminderTable.addIntProperty("hour");
+        reminderTable.addIntProperty("minute");
+        reminderTable.addIntProperty("week");//week=0表示一次性闹钟或者按天的周期性闹钟，非0 的情况下是几就代表以周为周期性的周几的闹钟
+        reminderTable.addStringProperty("tips");//闹钟提示信息
+        reminderTable.addIntProperty("soundOrVibrator");//2表示声音和震动都执行，1表示只有铃声提醒，0表示只有震动提醒
+        reminderTable.addIntProperty("state");//0：未生效，1：生效
+
     }
 
     /*

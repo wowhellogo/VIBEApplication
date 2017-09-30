@@ -30,6 +30,8 @@ public class ReminderAdapter extends BaseRecyclerViewAdapter<Reminder> {
         } else {
             helper.setText(R.id.tv_type, "Once");
         }
-        helper.setText(R.id.tv_reminder,model.getName());
+        helper.setText(R.id.tv_reminder, model.getName());
+        helper.setChecked(R.id.switch1, model.getState() == 1);
+        helper.setItemChildCheckedChangeListener(R.id.switch1);
     }
 }

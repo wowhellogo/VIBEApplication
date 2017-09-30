@@ -10,6 +10,7 @@ import com.hao.common.rx.RxUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.utils.ViewUtils;
 import com.vibe.app.adapter.ReminderAdapter;
+import com.vibe.app.alarmmanager.clock.AlarmManagerUtil;
 import com.vibe.app.database.AbstractDatabaseManager;
 import com.vibe.app.model.Reminder;
 
@@ -82,6 +83,34 @@ public class ReminderListActivity extends BaseActivity {
                         ToastUtil.show("添加成功");
                     });
         });
+        mAdapter.setOnItemChildCheckedChangeListener((parent, childView, position, isChecked) -> {
+            Reminder reminder = mAdapter.getItem(position);
+            int id = Integer.valueOf(reminder.get_id() + "");
+            if (isChecked) {
+                AlarmManagerUtil.setAlarm(this, reminder.getFlag(), reminder.getHour(), reminder.getMinute(),
+                        id, reminder.getWeek(), reminder.getTips(), reminder.getSoundOrVibrator());
+                ToastUtil.show("setAlarm");
+            } else {
+                AlarmManagerUtil.cancelAlarm(this, AlarmManagerUtil.ALARM_ACTION, id);
+                ToastUtil.show("cancelAlarm");
+            }
+            reminder.setState(isChecked ? 1 : 0);
+            Observable.just(mDatabaseManager.update(reminder))
+                    .compose(RxUtil.applySchedulersJobUI())
+                    .compose(bindToLifecycle())
+                    .subscribe(new Action1<Boolean>() {
+                        @Override
+                        public void call(Boolean aBoolean) {
+                            if (aBoolean) {
+                                ToastUtil.show(R.string.set_successfully);
+                            } else {
+                                ToastUtil.show(R.string.set_fail);
+                            }
+                        }
+                    });
+        });
+
+
     }
 
     @Override

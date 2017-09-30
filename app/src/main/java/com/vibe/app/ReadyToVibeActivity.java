@@ -32,6 +32,7 @@ public class ReadyToVibeActivity extends BaseActivity {
     private ReadyToVibeAdapter mAdapter;
 
 
+
     @Override
     protected int getRootLayoutResID() {
         return R.layout.activity_ready_to_vibe;

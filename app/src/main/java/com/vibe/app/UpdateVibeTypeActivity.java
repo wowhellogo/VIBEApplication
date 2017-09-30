@@ -3,6 +3,7 @@ package com.vibe.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.hao.common.base.BaseActivity;
@@ -13,7 +14,7 @@ import com.vibe.app.model.VibeType;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class UpdateVibeTypeActivity extends BaseActivity {
+public class UpdateVibeTypeActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Bind(R.id.wv_number)
@@ -37,7 +38,16 @@ public class UpdateVibeTypeActivity extends BaseActivity {
 
     @Override
     protected int getRootLayoutResID() {
-        return R.layout.activity_update_vibe_type;
+        vibeType = (VibeType) getIntent().getSerializableExtra("vibeType");
+        if (vibeType.get_id() == 1) {
+            return R.layout.activity_update_vibe_type_orthovibe;
+        } else if (vibeType.get_id() == 2) {
+            return R.layout.activity_update_vibe_type_vibration;
+        } else if (vibeType.get_id() == 3) {
+            return R.layout.activity_update_vibe_type_wave;
+        } else {
+            return R.layout.activity_update_vibe_type_pulse;
+        }
     }
 
     @Override
@@ -77,9 +87,11 @@ public class UpdateVibeTypeActivity extends BaseActivity {
         mWvNumber.setOnItemSelectedListener(new WheelView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
+                index += 1;
                 mTvTime.setText("time:" + index + "minute");
             }
         });
+        mTvOk.setOnClickListener(this);
     }
 
     @Override
@@ -93,4 +105,12 @@ public class UpdateVibeTypeActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_ok:
+
+                break;
+        }
+    }
 }

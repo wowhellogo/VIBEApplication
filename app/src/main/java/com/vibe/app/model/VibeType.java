@@ -7,13 +7,14 @@ import java.io.Serializable;
 /**
  * Entity mapped to table "VIBE_TYPE".
  */
-public class VibeType implements Serializable {
+public class VibeType implements Serializable{
 
     private Long _id;
     private String name;
     private Integer icon;
     private Integer time;
     private Integer rate;
+    private Boolean isSelected;
 
     public VibeType() {
     }
@@ -22,12 +23,13 @@ public class VibeType implements Serializable {
         this._id = _id;
     }
 
-    public VibeType(Long _id, String name, Integer icon, Integer time, Integer rate) {
+    public VibeType(Long _id, String name, Integer icon, Integer time, Integer rate, Boolean isSelected) {
         this._id = _id;
         this.name = name;
         this.icon = icon;
         this.time = time;
         this.rate = rate;
+        this.isSelected = isSelected;
     }
 
     public Long get_id() {
@@ -68,6 +70,14 @@ public class VibeType implements Serializable {
 
     public void setRate(Integer rate) {
         this.rate = rate;
+    }
+
+    public Boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
 }

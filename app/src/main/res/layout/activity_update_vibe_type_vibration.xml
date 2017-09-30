@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_update_vibe_type"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    android:orientation="vertical"
+    tools:context="com.vibe.app.UpdateVibeTypeActivity">
+
+    <com.hao.common.widget.wheel.WheelView
+        android:id="@+id/wv_number"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@android:color/white"
+        app:dividerColor="@color/colorPrimary"
+        app:wheelDividerSize="40dp"
+        app:wheelItemCount="5"
+        app:wheelItemSize="35dp"
+        app:wheelOrientation="horizontal"
+        app:wheelTextSize="25sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/margin_10"
+        android:text="time:20minute" />
+
+    <com.hao.common.widget.VibeProgressbarView
+        android:id="@+id/vibe_progressbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:aboveRectColor="#ffd055"
+        app:blowRectColor="#fb9c3f"
+        app:endNum="10"
+        app:lineColor="#ff1b9cff"
+        app:numTextSize="14sp"
+        app:peakValleyCount="12"
+        app:numTextColor="#353535"
+        app:progress="50"
+        app:startNum="0"
+        app:type="rect" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#272727"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_ok"
+            android:paddingBottom="@dimen/margin_10"
+            android:paddingLeft="@dimen/margin_40"
+            android:paddingRight="@dimen/margin_40"
+            android:paddingTop="@dimen/margin_10"
+            android:text="OK"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

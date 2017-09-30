@@ -68,7 +68,7 @@ public class VibeProgressbarView extends View {
     private int mIntervalRow = 10;//行间隔线的条数
 
 
-    private int mIntervalCol = 10;//列间隔线的条数
+    private int mIntervalCol = 6;//列间隔线的条数
     private int mIntervalSize;//矩形间隔大小
     public OnChangNumProgressListener mOnChangNumProgressListener;
     private int mContentWidth;//控件有效内容宽度
@@ -101,7 +101,7 @@ public class VibeProgressbarView extends View {
         mProgress = attributes.getInt(R.styleable.VibeProgressbarView_progress, DEFAULT_PROGRESS);
         mStartNum = attributes.getInt(R.styleable.VibeProgressbarView_startNum, 0);
         mEndNum = attributes.getInt(R.styleable.VibeProgressbarView_endNum, 100);
-        mPeakValleyCount = attributes.getInt(R.styleable.VibeProgressbarView_peakValleyCount, 4);
+        mPeakValleyCount=attributes.getInt(R.styleable.VibeProgressbarView_peakValleyCount,4);
         type = attributes.getInt(R.styleable.VibeProgressbarView_type, WAVE);
         mNumTextSize = (int) attributes.getDimension(R.styleable.VibeProgressbarView_numTextSize, TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
@@ -285,15 +285,15 @@ public class VibeProgressbarView extends View {
      */
     private void drawBackgroundLine(Canvas canvas) {
         //画横线
-        for (int i = 0; i < mIntervalRow; i++) {
+        for (int i = 1; i < mIntervalRow; i++) {
             float x = mPaddingLeft + 20 + mNumTextWidth;
-            float y = mPaddingTop + (mIntervalHeight * (mIntervalRow - i)) + mNumTextHeight;
-            canvas.drawLine(x, y, mContentWidth  - mNumTextWidth, y, mLinePaint);
+            float y = mPaddingTop + (mIntervalHeight * (mIntervalRow - i));
+            canvas.drawLine(x, y, mContentWidth - 20 - mNumTextWidth, y, mLinePaint);
         }
 
         //画竖线
         for (int i = 1; i <= mIntervalCol; i++) {
-            float x = mPaddingLeft + mNumTextWidth-20 + i * mIntervalWidth;
+            float x = mPaddingLeft + mNumTextWidth + i * mIntervalWidth;
             float startY = mContentHeight - mIntervalHeight * mIntervalRow;
             canvas.drawLine(x, startY, x, mContentHeight, mLinePaint);
         }

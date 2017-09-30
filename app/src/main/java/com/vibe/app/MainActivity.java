@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.dao.AbstractDao;
 import rx.Observable;
-import rx.functions.Action1;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -84,19 +84,16 @@ public class MainActivity extends BaseActivity {
     public void insertDate() {
         if (!SPUtil.getBoolean("insert", false)) {
             List<VibeType> list = new ArrayList<>();
-            list.add(new VibeType(1l, "advice of orthovibe", R.mipmap.ic_choice_orthovybe, 1, 1));
-            list.add(new VibeType(2l, "vibration", R.mipmap.ic_choice_vibration, 1, 1));
-            list.add(new VibeType(3l, "wave", R.mipmap.ic_choice_wave, 1, 1));
-            list.add(new VibeType(4l, "pulse", R.mipmap.ic_choice_pulse, 1, 1));
+            list.add(new VibeType(1l, "advice of orthovibe", R.mipmap.ic_choice_orthovybe, 1, 1,true));
+            list.add(new VibeType(2l, "vibration", R.mipmap.ic_choice_vibration, 1, 1,false));
+            list.add(new VibeType(3l, "wave", R.mipmap.ic_choice_wave, 1, 1,false));
+            list.add(new VibeType(4l, "pulse", R.mipmap.ic_choice_pulse, 1, 1,false));
             Observable.just(mDatabaseManager.insertOrReplaceList(list))
                     .compose(RxUtil.applySchedulersJobUI())
                     .compose(bindToLifecycle())
-                    .subscribe(new Action1<Boolean>() {
-                        @Override
-                        public void call(Boolean aBoolean) {
-                            ToastUtil.show("初始化成功");
-                            SPUtil.putBoolean("insert", true);
-                        }
+                    .subscribe(aBoolean -> {
+                        ToastUtil.show("初始化成功");
+                        SPUtil.putBoolean("insert", true);
                     });
         }
 

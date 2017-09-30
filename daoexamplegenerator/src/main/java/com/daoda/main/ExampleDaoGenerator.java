@@ -22,6 +22,7 @@ public class ExampleDaoGenerator {
         vibeTypeTable.addIntProperty("icon");
         vibeTypeTable.addIntProperty("time");
         vibeTypeTable.addIntProperty("rate");
+        vibeTypeTable.addBooleanProperty("isSelected");//选中
 
         //自慰棒自慰纪录表
         Entity vibeRecordTable = schema.addEntity("VibeRecord");

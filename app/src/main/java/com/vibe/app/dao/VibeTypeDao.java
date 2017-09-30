@@ -28,6 +28,7 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
         public final static Property Icon = new Property(2, Integer.class, "icon", false, "ICON");
         public final static Property Time = new Property(3, Integer.class, "time", false, "TIME");
         public final static Property Rate = new Property(4, Integer.class, "rate", false, "RATE");
+        public final static Property IsSelected = new Property(5, Boolean.class, "isSelected", false, "IS_SELECTED");
     };
 
 
@@ -47,7 +48,8 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
                 "\"NAME\" TEXT," + // 1: name
                 "\"ICON\" INTEGER," + // 2: icon
                 "\"TIME\" INTEGER," + // 3: time
-                "\"RATE\" INTEGER);"); // 4: rate
+                "\"RATE\" INTEGER," + // 4: rate
+                "\"IS_SELECTED\" INTEGER);"); // 5: isSelected
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_VIBE_TYPE__ID ON VIBE_TYPE" +
                 " (\"_ID\");");
@@ -88,6 +90,11 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
         if (rate != null) {
             stmt.bindLong(5, rate);
         }
+ 
+        Boolean isSelected = entity.getIsSelected();
+        if (isSelected != null) {
+            stmt.bindLong(6, isSelected ? 1L: 0L);
+        }
     }
 
     /** @inheritdoc */
@@ -104,7 +111,8 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // icon
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // time
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4) // rate
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // rate
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // isSelected
         );
         return entity;
     }
@@ -117,6 +125,7 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
         entity.setIcon(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setTime(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setRate(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setIsSelected(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     /** @inheritdoc */

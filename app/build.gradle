@@ -44,7 +44,7 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            /*applicationVariants.all { variant ->
+            applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
@@ -52,7 +52,7 @@ android {
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
                 }
-            }*/
+            }
         }
         debug {
             signingConfig signingConfigs.release
@@ -123,5 +123,13 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    compile("com.polidea.rxandroidble:rxandroidble:1.4.2") {
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'io.reactivex', module: 'rxandroid'
+        exclude group: 'io.reactivex', module: 'rxjava'
+        exclude group: 'me.tatarka', module: 'gradle-retrolambda'
+        exclude group: 'junit', module: 'junit'
+    }
+
 }
 

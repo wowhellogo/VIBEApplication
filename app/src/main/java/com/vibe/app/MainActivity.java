@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hao.common.base.BaseActivity;
+import com.hao.common.runtimepermissions.PermissionsManager;
+import com.hao.common.runtimepermissions.PermissionsResultAction;
 import com.hao.common.rx.RxUtil;
 import com.hao.common.utils.SPUtil;
 import com.hao.common.utils.ToastUtil;
@@ -96,6 +98,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(String permission) {
+
+            }
+        });
 
     }
 

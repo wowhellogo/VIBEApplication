@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.vibe.app">
+    package="com.vibe.app">
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+
 
     <application
         android:name=".VibeApplication"
@@ -13,45 +19,54 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".PairToVibeActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <!-- 选择模式 -->
         <activity
             android:name=".ReadyToVibeActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <!-- 调整模式 -->
         <activity
             android:name=".UpdateVibeTypeActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <!-- 纪录 -->
         <activity
             android:name=".VibeRecordListActivity"
             android:configChanges="orientation"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <!-- 广播接收器 -->
         <receiver android:name=".alarmmanager.clock.LoongggAlarmReceiver">
             <intent-filter>
-                <action android:name="com.vibe.app.alarm.clock"/>
+                <action android:name="com.vibe.app.alarm.clock" />
             </intent-filter>
         </receiver>
 
         <!-- 闹钟界面 -->
         <activity
             android:name=".alarmmanager.clock.ClockAlarmActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name=".ReminderListActivity">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--闹钟列表-->
+        <activity
+            android:name=".ReminderListActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"/>
+        <!--设备列表-->
+        <activity
+            android:name=".BleDeviceListActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>

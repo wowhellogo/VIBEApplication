@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_30"
-        android:text="Only pair to one smart hpone"
+        android:text="Only pair to one smart phone"
         android:textColor="#171717"
         android:textSize="@dimen/text_size_14"
         />
@@ -60,6 +60,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_exlore"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"

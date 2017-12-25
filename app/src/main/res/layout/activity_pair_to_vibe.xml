@@ -48,13 +48,14 @@
         />
 
     <TextView
+        android:id="@+id/tv_pair_to_vibe"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/selector_pair_btn"
-        android:padding="@dimen/margin_10"
         android:gravity="center"
-        android:text="pair Orthe-Vibe"
+        android:padding="@dimen/margin_10"
+        android:text="Pair Orthe Vibe"
         android:textColor="@android:color/white"
         />
 
@@ -65,7 +66,7 @@
         android:background="@drawable/selector_pair_btn"
         android:gravity="center"
         android:padding="@dimen/margin_10"
-        android:text="exlore"
+        android:text="Exlore"
         android:textColor="@android:color/white"
         />
 

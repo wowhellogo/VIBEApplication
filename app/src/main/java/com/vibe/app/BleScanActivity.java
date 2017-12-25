@@ -5,18 +5,18 @@ import android.os.Bundle;
 import com.hao.common.base.BaseActivity;
 
 /**
- * @author Administrator
+ * @author linguoding
  * @Package com.vibe.app
  * @作 用:
- * @创 建 人: linguoding 邮箱：linggoudingg@gmail.com
- * @日 期: 2017年09月15日  14:42
+ * @邮箱：linggoudingg@gmail.com
+ * @日 期: 2017年12月22日  19:53
  */
 
 
-public class PairToVibeActivity extends BaseActivity {
+public class BleScanActivity extends BaseActivity {
     @Override
     protected int getRootLayoutResID() {
-        return R.layout.activity_pair_to_vibe;
+        return R.layout.activity_ble_scan;
     }
 
     @Override

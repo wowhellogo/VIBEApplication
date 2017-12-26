@@ -1,7 +1,7 @@
 package com.hao.common.nucleus.presenter;
 
 import com.hao.common.exception.ErrorMessageFactory;
-import com.hao.common.exception.NotDataListException;
+import com.hao.common.exception.NoMoreDataException;
 import com.hao.common.exception.NotFoundDataException;
 import com.hao.common.nucleus.view.loadview.ILoadDataView;
 import com.hao.common.nucleus.view.loadview.ILoadPageListDataView;
@@ -22,13 +22,12 @@ import rx.functions.Func0;
 
 
 public class LoadPresenter extends RxPresenter {
-    protected int startIndex = 0;//索引
-    protected int pageSize = 10;
+    public int page = 1;//索引
+    public int page_size = 15;
     protected boolean isShowing = true;//是否显示加载view
 
     private final static int LOAD_MODEL = 0;
     private final static int LOAD_LIST = 1;
-
 
     //####################################### Start加载Model #######################################################
     private class DefaultModelAction2<View extends ILoadDataView<Model>, Model> implements Action2<View, Model> {
@@ -37,6 +36,21 @@ public class LoadPresenter extends RxPresenter {
             view.loadDataToUI(model);
             view.showContentView();
         }
+    }
+
+    public LoadPresenter restPageSize() {
+        this.page = 1;
+        return this;
+    }
+
+    public LoadPresenter setShowing(boolean showing) {
+        this.isShowing = showing;
+        return this;
+    }
+
+    public LoadPresenter setPageSize() {
+        this.page += 1;
+        return this;
     }
 
     private class DefaultModelErrorAction2<View extends ILoadDataView> implements Action2<View, Throwable> {
@@ -58,7 +72,7 @@ public class LoadPresenter extends RxPresenter {
         restartableFirst(LOAD_MODEL, new Func0<Observable<Model>>() {
             @Override
             public Observable<Model> call() {
-                return observable.compose(RxUtil.applySchedulersJobUI());
+                return observable;
             }
         }, new DefaultModelAction2<View, Model>(), new DefaultModelErrorAction2<View>());
         start(LOAD_MODEL);
@@ -70,27 +84,17 @@ public class LoadPresenter extends RxPresenter {
 
         @Override
         public void call(View view, Throwable e) {
-            startIndex -= pageSize;
-            if (isShowing) {
-                if (e instanceof NotDataListException) {
+            page--;
+            if (e instanceof NotFoundDataException) {
+                if (isShowing) {
                     view.showEmptyView();
                 } else {
-                    view.showFailView();
-                    view.showError(ErrorMessageFactory.create(view.getContext(), (Exception) e));
-                }
-
-            } else {
-                if (e instanceof NotDataListException) {
-                    NotDataListException exception = (NotDataListException) e;
-                    //没有更多数据
-                    if (isNoMoreData(exception.getTotal(), view.getTotalItem())) {
-                        view.onNoMoreLoad();
-                    }
-                } else if (e instanceof NotFoundDataException) {
                     view.onNoDate();
-                } else {
-                    view.showError(ErrorMessageFactory.create(view.getContext(), (Exception) e));
                 }
+            } else if (e instanceof NoMoreDataException) {
+                view.onNoMoreLoad();
+            } else {
+                view.showError(ErrorMessageFactory.create(view.getContext(), (Exception) e));
             }
         }
     }
@@ -118,18 +122,7 @@ public class LoadPresenter extends RxPresenter {
      * @return
      */
     protected boolean isRefresh() {
-        return startIndex == 0;
-    }
-
-    /**
-     * 是否没有更多数据
-     *
-     * @param total
-     * @param count
-     * @return
-     */
-    private boolean isNoMoreData(int total, int count) {
-        return (total > count && total != count) ? false : true;
+        return page == 1;
     }
 
 
@@ -137,7 +130,7 @@ public class LoadPresenter extends RxPresenter {
         restartableFirst(LOAD_LIST, new Func0<Observable<List<Model>>>() {
             @Override
             public Observable<List<Model>> call() {
-                return observable.compose(RxUtil.applySchedulersJobUI());
+                return observable;
             }
         }, new DefaultListAction2<View, Model>(), new DefaultListErrorAction2<View>());
         start(LOAD_LIST);

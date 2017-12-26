@@ -81,9 +81,12 @@ public class QuickSideBarTipsItemView extends View {
 
     }
 
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (TextUtils.isEmpty(mText))return;
+        if (TextUtils.isEmpty(mText)) {
+            return;
+        }
         canvas.drawColor(getResources().getColor(android.R.color.transparent));
         float[] radii;
 

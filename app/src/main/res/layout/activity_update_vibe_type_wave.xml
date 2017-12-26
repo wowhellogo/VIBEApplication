@@ -45,7 +45,7 @@
         app:peakValleyCount="5"
         app:progress="50"
         app:startNum="0"
-        app:type="1"/>
+        app:type="rect"/>
 
     <LinearLayout
         android:layout_width="match_parent"

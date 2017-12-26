@@ -20,12 +20,15 @@ public class MD5STo16Byte {
      * @return
      */
     private static char char2Int(char ch) {
-        if (ch >= '0' && ch <= '9')
+        if (ch >= '0' && ch <= '9') {
             return (char) (ch - '0');
-        if (ch >= 'a' && ch <= 'f')
+        }
+        if (ch >= 'a' && ch <= 'f') {
             return (char) (ch - 'a' + 10);
-        if (ch >= 'A' && ch <= 'F')
+        }
+        if (ch >= 'A' && ch <= 'F') {
             return (char) (ch - 'A' + 10);
+        }
         return ' ';
     }
 

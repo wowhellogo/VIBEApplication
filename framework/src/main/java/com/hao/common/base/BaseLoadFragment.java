@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hao.common.R;
+import com.hao.common.adapter.BaseDivider;
 import com.hao.common.adapter.BaseRecyclerViewAdapter;
 import com.hao.common.adapter.OnRVItemClickListener;
-import com.hao.common.exception.ErrorMessageFactory;
 import com.hao.common.nucleus.presenter.LoadPresenter;
 import com.hao.common.nucleus.view.loadview.ILoadPageListDataView;
 import com.hao.common.utils.ToastUtil;
@@ -27,7 +27,7 @@ import java.util.List;
  * @日 期: 2017/3/18 0018
  */
 
-public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> implements ILoadPageListDataView<T>,
+public abstract class BaseLoadFragment<T>  extends BaseFragment<LoadPresenter> implements ILoadPageListDataView<T>,
         SwipeRefreshLayout.OnRefreshListener, LoadingLayout.OnReloadListener, OnRVItemClickListener, XRecyclerView.LoadingListener {
     protected LoadingLayout mLoadingLayout;
     protected RecyclerView mRecyclerView;
@@ -44,7 +44,7 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
         mLoadingLayout = getViewById(R.id.loading_layout);
         mRecyclerView = getViewById(R.id.recycler_view);
         mRefreshLayout = getViewById(R.id.swipe_refresh_layout);
-        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorAccent));
+        mRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary),getResources().getColor(R.color.colorAccent));
 
         ViewUtils.initVerticalLinearRecyclerView(getContext(), mRecyclerView);
         createAdapter();
@@ -61,7 +61,7 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
         mRefreshLayout.setOnRefreshListener(this);
         mLoadingLayout.setOnReloadListener(this);
         mAdapter.setOnRVItemClickListener(this);
-        if (mRecyclerView instanceof XRecyclerView) {
+        if(mRecyclerView instanceof XRecyclerView){
             ((XRecyclerView) mRecyclerView).setLoadingListener(this);
         }
     }
@@ -73,9 +73,9 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
 
     @Override
     public void onRefreshDataToUI(List<T> ms) {
-        if (mAdapter != null) {
+        if (mAdapter != null){
             mAdapter.setData(ms);
-            if (mRecyclerView instanceof XRecyclerView) {
+            if(mRecyclerView instanceof XRecyclerView){
                 ((XRecyclerView) mRecyclerView).resetLoadMore();
             }
         }
@@ -83,15 +83,17 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
 
     @Override
     public void onLoadMoreDataToUI(List<T> ms) {
-        if (mAdapter != null)
+        if (mAdapter != null) {
             mAdapter.addMoreData(ms);
+        }
     }
 
 
     @Override
     public void onRefreshComplete() {
-        if (mRefreshLayout != null)
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -99,18 +101,16 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.loadMoreComplete();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
     @Override
     public void onNoDate() {
-        if (mRefreshLayout != null)
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
-
-        if(mAdapter.getData()!=null&&mAdapter.getData().size()!=0){
-            mAdapter.clear();
         }
         ToastUtil.show("暂无数据");
     }
@@ -120,8 +120,9 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.noMoreLoading();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
@@ -132,26 +133,30 @@ public abstract class BaseLoadFragment<T> extends BaseFragment<LoadPresenter> im
 
     @Override
     public void showLoadingView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Loading);
+        }
     }
 
     @Override
     public void showContentView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Success);
+        }
     }
 
     @Override
     public void showEmptyView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Empty);
+        }
     }
 
     @Override
     public void showFailView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Error);
+        }
     }
 
     @Override

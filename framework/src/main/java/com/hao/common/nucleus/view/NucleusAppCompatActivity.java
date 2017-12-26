@@ -25,6 +25,7 @@ public abstract class NucleusAppCompatActivity<P extends Presenter> extends AppC
     /**
      * Returns a current presenter factory.
      */
+    @Override
     public PresenterFactory<P> getPresenterFactory() {
         return presenterDelegate.getPresenterFactory();
     }
@@ -47,6 +48,7 @@ public abstract class NucleusAppCompatActivity<P extends Presenter> extends AppC
      *
      * @return a currently attached presenter or null.
      */
+    @Override
     public P getPresenter() {
         return presenterDelegate.getPresenter();
     }
@@ -54,8 +56,9 @@ public abstract class NucleusAppCompatActivity<P extends Presenter> extends AppC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             presenterDelegate.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_STATE_KEY));
+        }
     }
 
     @Override

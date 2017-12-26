@@ -18,6 +18,7 @@ package com.hao.common.utils;
 
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class StringUtil {
     private StringUtil() {
@@ -49,11 +50,11 @@ public class StringUtil {
      * @param editText
      * @return
      */
-    public static boolean isEmpty(EditText editText) {
+    public static boolean isEmpty(TextView editText) {
         return isEmpty(editText.getText().toString().trim());
     }
 
-    public static String getEditTextStr(EditText editText){
+    public static String getEditTextStr(TextView editText) {
         return editText.getText().toString().trim();
     }
 

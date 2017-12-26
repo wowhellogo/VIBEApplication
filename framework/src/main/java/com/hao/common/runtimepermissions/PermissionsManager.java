@@ -24,7 +24,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -137,7 +136,7 @@ public class PermissionsManager {
    */
   private synchronized void removePendingAction(@Nullable PermissionsResultAction action) {
     for (Iterator<WeakReference<PermissionsResultAction>> iterator = mPendingActions.iterator();
-         iterator.hasNext(); ) {
+        iterator.hasNext(); ) {
       WeakReference<PermissionsResultAction> weakRef = iterator.next();
       if (weakRef.get() == action || weakRef.get() == null) {
         iterator.remove();

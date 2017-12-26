@@ -67,7 +67,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         collectionException(ex);
 
         try {
-            thread.sleep(2000);
+            Thread.sleep(2000);
             AppManager.getInstance().exit();
         } catch (Exception e) {
             e.printStackTrace();

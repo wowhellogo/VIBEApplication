@@ -1,11 +1,11 @@
 package com.hao.common.net;
 
+import android.util.Log;
+
 import com.hao.common.exception.NotNetworkException;
 import com.hao.common.utils.DeviceUtils;
 import com.hao.common.utils.NetWorkUtil;
 import com.hao.common.utils.StorageUtil;
-import com.hao.common.utils.ToastUtil;
-import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,10 +26,13 @@ import retrofit2.Retrofit;
  * @日 期: 2016/6/1 0001
  */
 public abstract class AbRestNetDataSource {
-    public final static int MAX_ATTEMPS = 3;//连接次数
+    //连接次数
+    public final static int MAX_ATTEMPS = 3;
     protected Retrofit retrofit;
     protected OkHttpClient okHttpClient;
     private CacheInterceptor mInterceptor = new CacheInterceptor();
+
+    public final static String GET = "GET";
 
     public AbRestNetDataSource() {
         //设置缓存路径
@@ -50,9 +53,10 @@ public abstract class AbRestNetDataSource {
     public class CacheInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();//获取请求
+            //获取请求
+            Request request = chain.request();
             HttpUrl httpUrl = request.url();
-            Logger.e(httpUrl.toString());
+            Log.e("lgd", httpUrl.toString());
             //这里就是说判读我们的网络条件，要是有网络的话就直接获取网络上面的数据，要是没有网络的话就去缓存里面取数据
             if (NetWorkUtil.isNetworkAvailable()) {
                 request = request.newBuilder()
@@ -67,7 +71,7 @@ public abstract class AbRestNetDataSource {
                         .removeHeader("Pragma")
                         .build();
             } else {
-                if (!request.method().equals("GET")) {
+                if (!GET.equals(request.method())) {
                     throw new NotNetworkException();
                 } else {
                     request = request.newBuilder()

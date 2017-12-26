@@ -23,6 +23,7 @@ public abstract class NucleusFragment<P extends Presenter> extends Fragment impl
     /**
      * Returns a current presenter factory.
      */
+    @Override
     public PresenterFactory<P> getPresenterFactory() {
         return presenterDelegate.getPresenterFactory();
     }
@@ -45,6 +46,7 @@ public abstract class NucleusFragment<P extends Presenter> extends Fragment impl
      *
      * @return a currently attached presenter or null.
      */
+    @Override
     public P getPresenter() {
         return presenterDelegate.getPresenter();
     }
@@ -52,8 +54,9 @@ public abstract class NucleusFragment<P extends Presenter> extends Fragment impl
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if (bundle != null)
+        if (bundle != null) {
             presenterDelegate.onRestoreInstanceState(bundle.getBundle(PRESENTER_STATE_KEY));
+        }
     }
 
     @Override

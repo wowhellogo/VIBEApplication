@@ -125,10 +125,11 @@ public class CircleTextProgressbar extends TextView {
     private void initialize(Context context, AttributeSet attributeSet) {
         mPaint.setAntiAlias(true);
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.CircleTextProgressbar);
-        if (typedArray.hasValue(R.styleable.CircleTextProgressbar_in_circle_color))
+        if (typedArray.hasValue(R.styleable.CircleTextProgressbar_in_circle_color)) {
             inCircleColors = typedArray.getColorStateList(R.styleable.CircleTextProgressbar_in_circle_color);
-        else
+        } else {
             inCircleColors = ColorStateList.valueOf(Color.TRANSPARENT);
+        }
         circleColor = inCircleColors.getColorForState(getDrawableState(), Color.TRANSPARENT);
         typedArray.recycle();
     }
@@ -223,10 +224,11 @@ public class CircleTextProgressbar extends TextView {
      * @return 返回真正的进度值。
      */
     private int validateProgress(int progress) {
-        if (progress > 100)
+        if (progress > 100) {
             progress = 100;
-        else if (progress < 0)
+        } else if (progress < 0) {
             progress = 0;
+        }
         return progress;
     }
 
@@ -396,12 +398,14 @@ public class CircleTextProgressbar extends TextView {
                     break;
             }
             if (progress >= 0 && progress <= 100) {
-                if (mCountdownProgressListener != null)
+                if (mCountdownProgressListener != null) {
                     mCountdownProgressListener.onProgress(listenerWhat, progress);
+                }
                 invalidate();
                 postDelayed(progressChangeTask, timeMillis / 100);
-            } else
+            } else {
                 progress = validateProgress(progress);
+            }
         }
     };
 

@@ -26,13 +26,16 @@ import java.util.TimeZone;
 public class CalendarUtil {
     private static final SimpleDateFormat sHourMinuteSdf = new SimpleDateFormat("HH:mm", Locale.CHINESE);
     private static final SimpleDateFormat sMonthDayHourMinuteSdf = new SimpleDateFormat("MM/dd HH:mm", Locale.CHINESE);
+    private static final SimpleDateFormat sMonthDayHourMinuteSdf1 = new SimpleDateFormat("MM月dd日 HH:mm", Locale.CHINESE);
     private static final SimpleDateFormat sYearMonthDayHourMinuteSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINESE);
+    private static final SimpleDateFormat sYearMonthDayHourMinuteSecondSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE);
     private static final SimpleDateFormat sYearMonthDaySdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
     private static final SimpleDateFormat sYearMonthDayWeekSlashSdf = new SimpleDateFormat("yyyy-MM-dd E", Locale.CHINESE);
     private static final SimpleDateFormat sYearMonthDayWeekSdf = new SimpleDateFormat("yyyy/MM/dd E", Locale.CHINESE);
     private static final SimpleDateFormat sChineseMonthDaySdf = new SimpleDateFormat("MM月dd日", Locale.CHINESE);
     private static final SimpleDateFormat sChineseYearMonthDaySdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINESE);
     private static final SimpleDateFormat sChineseYearMonthDayWeekSdf = new SimpleDateFormat("yyyy年MM月dd日 E", Locale.CHINESE);
+    private static final SimpleDateFormat sChineseYearMonthDayMinuteSecondSdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+'SS':'SZ", Locale.CANADA);
     private static final long MINUTE_MILLISECONDS = 60 * 1000;
     private static final long HOUR_MILLISECONDS = 60 * MINUTE_MILLISECONDS;
     private static final long DAY_MILLISECONDS = 24 * HOUR_MILLISECONDS;
@@ -233,6 +236,10 @@ public class CalendarUtil {
         return sMonthDayHourMinuteSdf.format(date);
     }
 
+    public static String formatMonthDayHourMinute1(Date date) {
+        return sMonthDayHourMinuteSdf1.format(date);
+    }
+
     public static String formatMonthDayHourMinute(long milliseconds) {
         if (milliseconds == NO_TIME) {
             return "";
@@ -244,6 +251,10 @@ public class CalendarUtil {
 
     public static String formatYearMonthDayHourMinute(Date date) {
         return sYearMonthDayHourMinuteSdf.format(date);
+    }
+
+    public static String formatYearMonthDayHourMinuteSecond(Date date) {
+        return sYearMonthDayHourMinuteSecondSdf.format(date);
     }
 
     public static String formatYearMonthDayHourMinute(long milliseconds) {
@@ -335,6 +346,15 @@ public class CalendarUtil {
 
     public static String formatChineseYearMonthDayWeek(Date date) {
         return sChineseYearMonthDayWeekSdf.format(date);
+    }
+
+    public static Date getDateByChineseYearMonthDayMinuteSecondSdf2(String data) {
+        try {
+            return sChineseYearMonthDayMinuteSecondSdf2.parse(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static String formatChineseYearMonthDayWeek(long milliseconds) {

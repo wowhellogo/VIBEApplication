@@ -80,8 +80,6 @@ public abstract class AppBaseExpandableAdapter<T> extends BaseExpandableListAdap
     public void setDatas(List<T> datas) {
         if (datas != null) {
             this.data = datas;
-        } else {
-            this.data.clear();
         }
         notifyDataSetChanged();
     }

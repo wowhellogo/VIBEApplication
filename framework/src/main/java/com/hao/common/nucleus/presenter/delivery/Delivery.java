@@ -22,20 +22,27 @@ public final class Delivery<View, T> {
     }
 
     public void split(Action2<View, T> onNext, @Nullable Action2<View, Throwable> onError) {
-        if (notification.getKind() == Notification.Kind.OnNext)
+        if (notification.getKind() == Notification.Kind.OnNext) {
             onNext.call(view, notification.getValue());
-        else if (onError != null && notification.getKind() == Notification.Kind.OnError)
+        } else if (onError != null && notification.getKind() == Notification.Kind.OnError) {
             onError.call(view, notification.getThrowable());
+        }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Delivery<?, ?> delivery = (Delivery<?, ?>)o;
 
-        if (view != null ? !view.equals(delivery.view) : delivery.view != null) return false;
+        if (view != null ? !view.equals(delivery.view) : delivery.view != null) {
+            return false;
+        }
         return !(notification != null ? !notification.equals(delivery.notification) : delivery.notification != null);
     }
 

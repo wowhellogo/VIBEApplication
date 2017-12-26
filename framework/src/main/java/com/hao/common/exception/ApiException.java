@@ -28,6 +28,10 @@ public class ApiException extends Exception {
         mCode = code;
     }
 
+    public ApiException(String msg) {
+        super(msg);
+    }
+
     public int getCode() {
         return mCode;
     }

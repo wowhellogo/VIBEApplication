@@ -16,6 +16,7 @@
 
 package com.hao.common.utils;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.hao.common.manager.AppManager;
@@ -68,6 +69,7 @@ public class StorageUtil {
         }
         return fileDir;
     }
+
 
     /**
      * 获取当前app图片文件存储目录

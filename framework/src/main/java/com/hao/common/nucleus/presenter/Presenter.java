@@ -132,8 +132,9 @@ public class Presenter<View> {
      * Destroys the presenter, calling all {@link OnDestroyListener} callbacks.
      */
     public void destroy() {
-        for (OnDestroyListener listener : onDestroyListeners)
+        for (OnDestroyListener listener : onDestroyListeners) {
             listener.onDestroy();
+        }
         onDestroy();
     }
 

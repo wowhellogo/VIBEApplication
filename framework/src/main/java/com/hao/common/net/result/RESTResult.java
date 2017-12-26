@@ -9,49 +9,29 @@ import java.io.Serializable;
  * @日 期: 2016-01-15
  */
 public class RESTResult<T> implements Serializable {
-    private int code;
-    private boolean hasError;//是否有错误
-    private String message;//错误信息
-    private Result<T> result;
+    private int errCode;
+    private T result;
 
-    public boolean isHasError() {
-        return hasError;
+    public int getErrCode() {
+        return errCode;
     }
 
-    public void setHasError(boolean hasError) {
-        this.hasError = hasError;
+    public void setErrCode(int errCode) {
+        this.errCode = errCode;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Result getResult() {
+    public T getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(T result) {
         this.result = result;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 
     @Override
     public String toString() {
         return "RESTResult{" +
-                "code=" + code +
-                ", hasError=" + hasError +
-                ", message='" + message + '\'' +
+                "errCode=" + errCode +
                 ", result=" + result +
                 '}';
     }

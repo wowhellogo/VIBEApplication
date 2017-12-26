@@ -31,7 +31,7 @@ public class ImageLoader {
     }
 
     //直接加载网络图片
-    private void displayImage(String url, Context context, ImageView imageView, int placeholderImage) {
+    public void displayImage(String url, Context context, ImageView imageView, int placeholderImage) {
         Glide.with(context)
                 .load(url)
                 .dontAnimate()

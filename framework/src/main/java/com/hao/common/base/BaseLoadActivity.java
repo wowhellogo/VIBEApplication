@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.hao.common.R;
 import com.hao.common.adapter.BaseRecyclerViewAdapter;
 import com.hao.common.adapter.OnRVItemClickListener;
-import com.hao.common.exception.ErrorMessageFactory;
 import com.hao.common.nucleus.presenter.LoadPresenter;
 import com.hao.common.nucleus.view.loadview.ILoadPageListDataView;
 import com.hao.common.utils.ToastUtil;
@@ -52,6 +51,7 @@ public abstract class BaseLoadActivity<P extends LoadPresenter, T> extends BaseA
         //mRecyclerView.addItemDecoration(BaseDivider.newBitmapDivider());
         mRecyclerView.setAdapter(mAdapter);
         showLoadingView();
+
     }
 
     protected abstract void createAdapter();
@@ -84,15 +84,18 @@ public abstract class BaseLoadActivity<P extends LoadPresenter, T> extends BaseA
 
     @Override
     public void onLoadMoreDataToUI(List<T> ms) {
-        if (mAdapter != null)
+        if (mAdapter != null) {
             mAdapter.addMoreData(ms);
+        }
     }
 
 
     @Override
     public void onRefreshComplete() {
-        if (mRefreshLayout != null)
+        showContentView();
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -100,19 +103,20 @@ public abstract class BaseLoadActivity<P extends LoadPresenter, T> extends BaseA
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.loadMoreComplete();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
     @Override
     public void onNoDate() {
-        if (mRefreshLayout != null)
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
-        if(mAdapter.getData()!=null&&mAdapter.getData().size()!=0){
+        }
+        if (mAdapter != null) {
             mAdapter.clear();
         }
-        ToastUtil.show("暂无数据");
     }
 
     @Override
@@ -120,8 +124,9 @@ public abstract class BaseLoadActivity<P extends LoadPresenter, T> extends BaseA
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.noMoreLoading();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
@@ -140,31 +145,35 @@ public abstract class BaseLoadActivity<P extends LoadPresenter, T> extends BaseA
 
     @Override
     public void showLoadingView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Loading);
+        }
     }
 
     @Override
     public void showContentView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Success);
+        }
     }
 
     @Override
     public void showEmptyView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Empty);
+        }
     }
 
     @Override
     public void showFailView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Error);
+        }
     }
 
     @Override
-    public void showError(String throwable) {
-        ToastUtil.show(throwable);
+    public void showError(String message) {
+        ToastUtil.show(message);
     }
 
     @Override

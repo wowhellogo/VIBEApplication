@@ -42,6 +42,7 @@ public class NucleusLayout<P extends Presenter> extends FrameLayout implements V
     /**
      * Returns a current presenter factory.
      */
+    @Override
     public PresenterFactory<P> getPresenterFactory() {
         return presenterDelegate.getPresenterFactory();
     }
@@ -64,6 +65,7 @@ public class NucleusLayout<P extends Presenter> extends FrameLayout implements V
      *
      * @return a currently attached presenter or null.
      */
+    @Override
     public P getPresenter() {
         return presenterDelegate.getPresenter();
     }
@@ -75,10 +77,12 @@ public class NucleusLayout<P extends Presenter> extends FrameLayout implements V
      */
     public Activity getActivity() {
         Context context = getContext();
-        while (!(context instanceof Activity) && context instanceof ContextWrapper)
+        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
             context = ((ContextWrapper) context).getBaseContext();
-        if (!(context instanceof Activity))
+        }
+        if (!(context instanceof Activity)) {
             throw new IllegalStateException("Expected an activity context, got " + context.getClass().getSimpleName());
+        }
         return (Activity) context;
     }
 
@@ -100,8 +104,9 @@ public class NucleusLayout<P extends Presenter> extends FrameLayout implements V
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (!isInEditMode())
+        if (!isInEditMode()) {
             presenterDelegate.onResume(this);
+        }
     }
 
     @Override

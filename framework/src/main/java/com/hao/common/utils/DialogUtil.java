@@ -125,7 +125,9 @@ public class DialogUtil {
     }
 
     protected void dismissAlertDialog() {
-        if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
     }
 
 

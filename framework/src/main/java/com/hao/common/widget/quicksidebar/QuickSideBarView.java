@@ -66,6 +66,7 @@ public class QuickSideBarView extends View {
         }
     }
 
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (int i = 0; i < mLetters.size(); i++) {

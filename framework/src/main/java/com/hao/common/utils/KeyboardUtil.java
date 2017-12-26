@@ -22,6 +22,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +38,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class KeyboardUtil {
     private KeyboardUtil() {
     }
+
 
     /**
      * 关闭activity中打开的键盘
@@ -71,12 +73,15 @@ public class KeyboardUtil {
      * @param editText
      */
     public static void openKeyboard(final Context context, final EditText editText) {
-        RxUtil.runInUIThreadDelay(300).subscribe(aVoid -> {
-            editText.requestFocus();
-            editText.setSelection(editText.getText().toString().length());
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
-        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                editText.requestFocus();
+                editText.setSelection(editText.getText().toString().length());
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+            }
+        }, 300);
     }
 
     /**
@@ -124,9 +129,9 @@ public class KeyboardUtil {
             int right = left + currentFocusView.getWidth();
             if (!(motionEvent.getX() > left && motionEvent.getX() < right && motionEvent.getY() > top && motionEvent.getY() < bottom)) {
                 if (dialogOrActivity instanceof Dialog) {
-                    KeyboardUtil.closeKeyboard((Dialog) dialogOrActivity);
+                    closeKeyboard((Dialog) dialogOrActivity);
                 } else if (dialogOrActivity instanceof Activity) {
-                    KeyboardUtil.closeKeyboard((Activity) dialogOrActivity);
+                    closeKeyboard((Activity) dialogOrActivity);
                 }
             }
         }

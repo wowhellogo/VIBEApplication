@@ -23,6 +23,7 @@ public class NucleusRxFragment<P extends Presenter> extends RxFragment implement
     /**
      * Returns a current presenter factory.
      */
+    @Override
     public PresenterFactory<P> getPresenterFactory() {
         return presenterDelegate.getPresenterFactory();
     }
@@ -45,6 +46,7 @@ public class NucleusRxFragment<P extends Presenter> extends RxFragment implement
      *
      * @return a currently attached presenter or null.
      */
+    @Override
     public P getPresenter() {
         return presenterDelegate.getPresenter();
     }
@@ -52,8 +54,9 @@ public class NucleusRxFragment<P extends Presenter> extends RxFragment implement
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if (bundle != null)
+        if (bundle != null) {
             presenterDelegate.onRestoreInstanceState(bundle.getBundle(PRESENTER_STATE_KEY));
+        }
     }
 
     @Override

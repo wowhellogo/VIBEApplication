@@ -41,7 +41,6 @@ import com.hao.common.rx.RxEvent;
 import com.hao.common.utils.CrashHandler;
 import com.hao.common.utils.NetWorkUtil;
 import com.hao.common.utils.ToastUtil;
-import com.hao.common.utils.UmengUtil;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -69,8 +68,9 @@ public class AppManager implements Application.ActivityLifecycleCallbacks {
         Application app = null;
         try {
             app = (Application) Class.forName("android.app.AppGlobals").getMethod("getInitialApplication").invoke(null);
-            if (app == null)
+            if (app == null) {
                 throw new IllegalStateException("Static initialization of Applications must be on main thread.");
+            }
         } catch (final Exception e) {
             Log.e(AppManager.class.getSimpleName(), "Failed to get current application from AppGlobals." + e.getMessage());
             try {
@@ -198,12 +198,12 @@ public class AppManager implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityResumed(Activity activity) {
-        UmengUtil.onActivityResumed(activity);
+
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        UmengUtil.onActivityPaused(activity);
+
     }
 
     @Override
@@ -275,7 +275,7 @@ public class AppManager implements Application.ActivityLifecycleCallbacks {
      *
      * @param activityClass
      */
-    public void popOthersActivity(Class<Activity> activityClass) {
+    public void popOthersActivity(Class<?> activityClass) {
         if (activityClass == null || mActivityStack.isEmpty()) {
             return;
         }
@@ -327,7 +327,6 @@ public class AppManager implements Application.ActivityLifecycleCallbacks {
             finishAllActivity();
 
             // 如果开发者调用Process.kill或者System.exit之类的方法杀死进程，请务必在此之前调用MobclickAgent.onKillProcess(Context context)方法，用来保存统计数据
-            UmengUtil.onKillProcess();
 
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0);

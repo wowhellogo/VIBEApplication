@@ -10,27 +10,11 @@ import java.util.List;
  * @日 期: 2016-01-15
  */
 public class Result<T> implements Serializable {
-    private boolean hasData;
-    private String data;
     private List<T> list;
-    private T model;
+    //当前页码
+    private int currently;
+    //总共页数
     private int total;
-
-    public boolean isHasData() {
-        return hasData;
-    }
-
-    public void setHasData(boolean hasData) {
-        this.hasData = hasData;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
 
     public List<T> getList() {
         return list;
@@ -40,12 +24,12 @@ public class Result<T> implements Serializable {
         this.list = list;
     }
 
-    public T getModel() {
-        return model;
+    public int getCurrently() {
+        return currently;
     }
 
-    public void setModel(T model) {
-        this.model = model;
+    public void setCurrently(int currently) {
+        this.currently = currently;
     }
 
     public int getTotal() {
@@ -54,5 +38,14 @@ public class Result<T> implements Serializable {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "list=" + list +
+                ", currently=" + currently +
+                ", total=" + total +
+                '}';
     }
 }

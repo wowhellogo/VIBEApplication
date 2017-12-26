@@ -40,8 +40,9 @@ public final class PresenterLifecycleDelegate<P extends Presenter> {
      * {@link ViewWithPresenter#setPresenterFactory(PresenterFactory)}
      */
     public void setPresenterFactory(@Nullable PresenterFactory<P> presenterFactory) {
-        if (presenter != null)
+        if (presenter != null) {
             throw new IllegalArgumentException("setPresenterFactory() should be called before onResume()");
+        }
         this.presenterFactory = presenterFactory;
     }
 
@@ -50,8 +51,9 @@ public final class PresenterLifecycleDelegate<P extends Presenter> {
      */
     public P getPresenter() {
         if (presenterFactory != null) {
-            if (presenter == null && bundle != null)
+            if (presenter == null && bundle != null) {
                 presenter = PresenterStorage.INSTANCE.getPresenter(bundle.getString(PRESENTER_ID_KEY));
+            }
 
             if (presenter == null) {
                 presenter = presenterFactory.createPresenter();
@@ -82,8 +84,9 @@ public final class PresenterLifecycleDelegate<P extends Presenter> {
      * {@link android.app.Activity#onCreate(Bundle)}, {@link android.app.Fragment#onCreate(Bundle)}, {@link android.view.View#onRestoreInstanceState(Parcelable)}.
      */
     public void onRestoreInstanceState(Bundle presenterState) {
-        if (presenter != null)
+        if (presenter != null) {
             throw new IllegalArgumentException("onRestoreInstanceState() should be called before onResume()");
+        }
         this.bundle = ParcelFn.unmarshall(ParcelFn.marshall(presenterState));
     }
 

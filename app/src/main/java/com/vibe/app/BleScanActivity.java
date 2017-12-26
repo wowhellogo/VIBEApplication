@@ -3,6 +3,7 @@ package com.vibe.app;
 import android.os.Bundle;
 
 import com.hao.common.base.BaseActivity;
+import com.hao.common.utils.StatusBarUtil;
 
 /**
  * @author linguoding
@@ -22,6 +23,11 @@ public class BleScanActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
     }
 
     @Override

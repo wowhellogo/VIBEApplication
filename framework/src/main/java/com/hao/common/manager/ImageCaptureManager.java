@@ -3,8 +3,10 @@ package com.hao.common.manager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,9 +51,17 @@ public class ImageCaptureManager {
     public Intent getTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
-            File photoFile = createImageFile();
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                File photoFile = createImageFile();
+                Uri photoUri = FileProvider.getUriForFile(AppManager.getApp(), "com.cstg.app.fileProvider", createImageFile());
+                if (photoUri != null) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                }
+            } else {
+                File photoFile = createImageFile();
+                if (photoFile != null) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                }
             }
         }
         return takePictureIntent;

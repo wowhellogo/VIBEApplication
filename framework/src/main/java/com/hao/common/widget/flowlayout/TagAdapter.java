@@ -47,8 +47,9 @@ public abstract class TagAdapter<T>
     public void setSelectedList(Set<Integer> set)
     {
         mCheckedPosList.clear();
-        if (set != null)
+        if (set != null) {
             mCheckedPosList.addAll(set);
+        }
         notifyDataChanged();
     }
 

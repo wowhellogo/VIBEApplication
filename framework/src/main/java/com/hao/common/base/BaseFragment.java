@@ -1,15 +1,20 @@
 package com.hao.common.base;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.ViewStubCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.hao.common.R;
@@ -33,15 +38,19 @@ import rx.functions.Action1;
  */
 
 
-public abstract class BaseFragment<P extends Presenter> extends NucleusRxFragment<P> implements EasyPermissions.PermissionCallbacks, TitleBar.Delegate {
+public abstract class BaseFragment<P extends Presenter> extends NucleusRxFragment<P> implements
+        EasyPermissions.PermissionCallbacks, TitleBar.Delegate {
     protected View mContentView;
     protected boolean mIsLoadedData = false;
     protected TitleBar mTitleBar;
     protected Toolbar mToolbar;
+    private AlertDialog mDialog;
+    private InputMethodManager inputMethodManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         // 避免多次从xml中加载布局文件
         if (mContentView == null) {
             initContentView();
@@ -242,6 +251,54 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusRxFragmen
         super.onDestroy();
     }
 
+    protected AlertDialog showStandardDialog(String title, String msg,
+                                             DialogInterface.OnClickListener onClickListener,
+                                             boolean isPromptDialog) {
+
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+
+        if (isPromptDialog) {
+            mDialog = new AlertDialog.Builder(getContext()).setPositiveButton(
+                    R.string.sure, onClickListener).create();
+        } else {
+            mDialog = new AlertDialog.Builder(getContext())
+                    .setPositiveButton(R.string.sure, onClickListener)
+                    .setNegativeButton(R.string.cancel, null).create();
+        }
+
+        if (title != null) {
+            mDialog.setTitle(title);
+        } else {
+            mDialog.setTitle(getString(R.string.prompt));
+        }
+        if (msg != null) {
+            mDialog.setMessage(msg);
+        }
+        mDialog.show();
+
+        return mDialog;
+    }
+
+    protected AlertDialog showStandardDialog(String msg,
+                                             DialogInterface.OnClickListener onClickListener) {
+        String title = getString(R.string.prompt);
+        return showStandardDialog(title, msg, onClickListener, false);
+    }
+
+    protected AlertDialog showPromptDialog(String msg) {
+        String title = getString(R.string.prompt);
+        return showStandardDialog(title, msg, null, true);
+    }
+
+    protected void dismissAlertDialog() {
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+    }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -284,4 +341,14 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusRxFragmen
     public void onClickRightSecondaryCtv() {
 
     }
+
+    protected void hideSoftKeyboard() {
+        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getActivity().getCurrentFocus() != null) {
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
 }

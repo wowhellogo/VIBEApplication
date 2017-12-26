@@ -39,7 +39,7 @@ public class CircularProgressBar extends View {
          * @param progress 当前进度
          * @param rate 当前进度与总进度的商 即：rate = (float)progress / duration
          */
-        public void onChange( int duration, int progress, float rate);
+        public void onChange(int duration, int progress, float rate);
     }
 
     private OnProgressChangeListener mOnChangeListener;
@@ -105,7 +105,8 @@ public class CircularProgressBar extends View {
     /**
      * 设置进度条背景的颜色
      */
-    public void setBackgroundColor( int color ) {
+    @Override
+    public void setBackgroundColor(int color ) {
         mBackgroundColor = color;
     }
 

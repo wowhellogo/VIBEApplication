@@ -78,8 +78,9 @@ public class RxPresenter<View> extends Presenter<View> {
      */
     public void restartable(int restartableId, Func0<Subscription> factory) {
         restartables.put(restartableId, factory);
-        if (requested.contains(restartableId))
+        if (requested.contains(restartableId)) {
             start(restartableId);
+        }
     }
 
     /**
@@ -101,8 +102,9 @@ public class RxPresenter<View> extends Presenter<View> {
     public void stop(int restartableId) {
         requested.remove((Integer) restartableId);
         Subscription subscription = restartableSubscriptions.get(restartableId);
-        if (subscription != null)
+        if (subscription != null) {
             subscription.unsubscribe();
+        }
     }
 
     /**
@@ -281,8 +283,9 @@ public class RxPresenter<View> extends Presenter<View> {
     @CallSuper
     @Override
     protected void onCreate(Bundle savedState) {
-        if (savedState != null)
+        if (savedState != null) {
             requested.addAll(savedState.getIntegerArrayList(REQUESTED_KEY));
+        }
     }
 
     /**
@@ -293,8 +296,9 @@ public class RxPresenter<View> extends Presenter<View> {
     protected void onDestroy() {
         views.onCompleted();
         subscriptions.unsubscribe();
-        for (Map.Entry<Integer, Subscription> entry : restartableSubscriptions.entrySet())
+        for (Map.Entry<Integer, Subscription> entry : restartableSubscriptions.entrySet()) {
             entry.getValue().unsubscribe();
+        }
     }
 
     /**
@@ -306,8 +310,9 @@ public class RxPresenter<View> extends Presenter<View> {
         for (int i = requested.size() - 1; i >= 0; i--) {
             int restartableId = requested.get(i);
             Subscription subscription = restartableSubscriptions.get(restartableId);
-            if (subscription != null && subscription.isUnsubscribed())
+            if (subscription != null && subscription.isUnsubscribed()) {
                 requested.remove(i);
+            }
         }
         state.putIntegerArrayList(REQUESTED_KEY, requested);
     }

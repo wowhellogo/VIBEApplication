@@ -11,7 +11,6 @@ import com.hao.common.R;
 import com.hao.common.adapter.BaseBindingRecyclerViewAdapter;
 import com.hao.common.adapter.BaseDivider;
 import com.hao.common.adapter.OnRVItemClickListener;
-import com.hao.common.exception.ErrorMessageFactory;
 import com.hao.common.nucleus.presenter.LoadPresenter;
 import com.hao.common.nucleus.view.loadview.ILoadPageListDataView;
 import com.hao.common.utils.ToastUtil;
@@ -70,8 +69,9 @@ public abstract class BaseLoadBindingActivity<T> extends BaseActivity<LoadPresen
 
     @Override
     public void onRefreshDataToUI(List<T> ms) {
-        if (mAdapter != null)
+        if (mAdapter != null) {
             mAdapter.setData(ms);
+        }
     }
 
     @Override
@@ -87,8 +87,9 @@ public abstract class BaseLoadBindingActivity<T> extends BaseActivity<LoadPresen
 
     @Override
     public void onRefreshComplete() {
-        if (mRefreshLayout != null)
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -96,15 +97,17 @@ public abstract class BaseLoadBindingActivity<T> extends BaseActivity<LoadPresen
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.loadMoreComplete();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
     @Override
     public void onNoDate() {
-        if (mRefreshLayout != null)
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
+        }
         ToastUtil.show("暂无数据");
     }
 
@@ -113,8 +116,9 @@ public abstract class BaseLoadBindingActivity<T> extends BaseActivity<LoadPresen
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.noMoreLoading();
-            if (mRefreshLayout != null)
+            if (mRefreshLayout != null) {
                 mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
@@ -125,26 +129,30 @@ public abstract class BaseLoadBindingActivity<T> extends BaseActivity<LoadPresen
 
     @Override
     public void showLoadingView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Loading);
+        }
     }
 
     @Override
     public void showContentView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Success);
+        }
     }
 
     @Override
     public void showEmptyView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Empty);
+        }
     }
 
     @Override
     public void showFailView() {
-        if (mLoadingLayout != null)
+        if (mLoadingLayout != null) {
             mLoadingLayout.setStatus(LoadingLayout.Error);
+        }
     }
 
     @Override

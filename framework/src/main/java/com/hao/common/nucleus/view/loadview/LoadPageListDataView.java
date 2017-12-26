@@ -43,17 +43,23 @@ public class LoadPageListDataView<M> implements ILoadPageListDataView<M> {
 
     @Override
     public void onRefreshDataToUI(List<M> ms) {
-        if (mAdapter != null) mAdapter.setData(ms);
+        if (mAdapter != null) {
+            mAdapter.setData(ms);
+        }
     }
 
     @Override
     public void onLoadMoreDataToUI(List<M> ms) {
-        if (mAdapter != null) mAdapter.addMoreData(ms);
+        if (mAdapter != null) {
+            mAdapter.addMoreData(ms);
+        }
     }
 
     @Override
     public void onRefreshComplete() {
-        if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
+        if (mRefreshLayout != null) {
+            mRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -61,13 +67,17 @@ public class LoadPageListDataView<M> implements ILoadPageListDataView<M> {
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.loadMoreComplete();
-            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null) {
+                mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
     @Override
     public void onNoDate() {
-        if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
+        if (mRefreshLayout != null) {
+            mRefreshLayout.setRefreshing(false);
+        }
         ToastUtil.show("暂无数据");
     }
 
@@ -76,7 +86,9 @@ public class LoadPageListDataView<M> implements ILoadPageListDataView<M> {
         if (mRecyclerView instanceof XRecyclerView) {
             XRecyclerView xRecyclerView = (XRecyclerView) mRecyclerView;
             xRecyclerView.noMoreLoading();
-            if (mRefreshLayout != null) mRefreshLayout.setRefreshing(false);
+            if (mRefreshLayout != null) {
+                mRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
@@ -87,22 +99,30 @@ public class LoadPageListDataView<M> implements ILoadPageListDataView<M> {
 
     @Override
     public void showLoadingView() {
-        if (mLoadingLayout != null) mLoadingLayout.setStatus(LoadingLayout.Loading);
+        if (mLoadingLayout != null) {
+            mLoadingLayout.setStatus(LoadingLayout.Loading);
+        }
     }
 
     @Override
     public void showContentView() {
-        if (mLoadingLayout != null) mLoadingLayout.setStatus(LoadingLayout.Success);
+        if (mLoadingLayout != null) {
+            mLoadingLayout.setStatus(LoadingLayout.Success);
+        }
     }
 
     @Override
     public void showEmptyView() {
-        if (mLoadingLayout != null) mLoadingLayout.setStatus(LoadingLayout.Empty);
+        if (mLoadingLayout != null) {
+            mLoadingLayout.setStatus(LoadingLayout.Empty);
+        }
     }
 
     @Override
     public void showFailView() {
-        if (mLoadingLayout != null) mLoadingLayout.setStatus(LoadingLayout.Error);
+        if (mLoadingLayout != null) {
+            mLoadingLayout.setStatus(LoadingLayout.Error);
+        }
     }
 
     @Override

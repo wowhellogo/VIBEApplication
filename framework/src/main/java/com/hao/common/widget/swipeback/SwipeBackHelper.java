@@ -1,25 +1,59 @@
+/*
+ * Copyright 2016 bingoogolapple
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hao.common.widget.swipeback;
+
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
 import android.view.View;
 
 import com.hao.common.R;
 import com.hao.common.utils.KeyboardUtil;
 
+import java.util.List;
+
 /**
- * @Package com.hao.common.helper
- * @作 用:滑动返回帮助类
- * @创 建 人: linguoding 邮箱：linggoudingg@gmail.com
- * @日 期: 2017年01月04日  18:25
+ * 作者:王浩 邮件:bingoogolapple@gmail.com
+ * 创建时间:17/1/4 下午3:44
+ * 描述:滑动返回帮助类
  */
-
-
 public class SwipeBackHelper {
     private Activity mActivity;
     private Delegate mDelegate;
     private SwipeBackLayout mSwipeBackLayout;
 
+    /**
+     * 必须在 Application 的 onCreate 方法中调用
+     *
+     * @param application          应用程序上下文
+     * @param problemViewClassList 如果发现滑动返回后立即触摸界面时应用崩溃，
+     *                             请把该界面里比较特殊的 View 的 class 添加到该集合中，
+     *                             目前在库中已经添加了 WebView 和 SurfaceView
+     */
+    public static void init(Application application, List<Class<? extends View>> problemViewClassList) {
+        SwipeBackManager.getInstance().init(application, problemViewClassList);
+    }
+
+    /**
+     * @param activity
+     * @param delegate
+     */
     public SwipeBackHelper(Activity activity, Delegate delegate) {
         mActivity = activity;
         mDelegate = delegate;
@@ -37,6 +71,11 @@ public class SwipeBackHelper {
             mSwipeBackLayout.setPanelSlideListener(new SwipeBackLayout.PanelSlideListener() {
                 @Override
                 public void onPanelSlide(View panel, float slideOffset) {
+                    // 开始滑动返回时关闭软键盘
+                    if (slideOffset < 0.03) {
+                        KeyboardUtil.closeKeyboard(mActivity);
+                    }
+
                     mDelegate.onSwipeBackLayoutSlide(slideOffset);
                 }
 
@@ -80,7 +119,7 @@ public class SwipeBackHelper {
     }
 
     /**
-     * 设置是否是微信滑动返回样式。默认值为 true。如果需要启用微信滑动返回样式，必须在 Application 的 onCreate 方法中执行 BGASwipeBackManager.getInstance().init(this)
+     * 设置是否是微信滑动返回样式。默认值为 true
      *
      * @param isWeChatStyle
      * @return
@@ -132,24 +171,81 @@ public class SwipeBackHelper {
     }
 
     /**
+     * 设置触发释放后自动滑动返回的阈值，默认值为 0.3f
+     *
+     * @param threshold
+     */
+    public SwipeBackHelper setSwipeBackThreshold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
+        if (mSwipeBackLayout != null) {
+            mSwipeBackLayout.setSwipeBackThreshold(threshold);
+        }
+        return this;
+    }
+
+    /**
+     * 设置底部导航条是否悬浮在内容上
+     *
+     * @param overlap
+     */
+    public SwipeBackHelper setIsNavigationBarOverlap(boolean overlap) {
+        if (mSwipeBackLayout != null) {
+            mSwipeBackLayout.setIsNavigationBarOverlap(overlap);
+        }
+        return this;
+    }
+
+    /**
+     * 是否正在滑动
+     *
+     * @return
+     */
+    public boolean isSliding() {
+        if (mSwipeBackLayout != null) {
+            return mSwipeBackLayout.isSliding();
+        }
+        return false;
+    }
+
+    /**
      * 执行跳转到下一个 Activity 的动画
      */
     public void executeForwardAnim() {
-        mActivity.overridePendingTransition(R.anim.activity_forward_enter, R.anim.activity_forward_exit);
+        executeForwardAnim(mActivity);
     }
 
     /**
      * 执行回到到上一个 Activity 的动画
      */
     public void executeBackwardAnim() {
-        mActivity.overridePendingTransition(R.anim.activity_backward_enter, R.anim.activity_backward_exit);
+        executeBackwardAnim(mActivity);
     }
 
     /**
      * 执行滑动返回到到上一个 Activity 的动画
      */
     public void executeSwipeBackAnim() {
-        mActivity.overridePendingTransition(R.anim.activity_swipeback_enter, R.anim.activity_swipeback_exit);
+        executeSwipeBackAnim(mActivity);
+    }
+
+    /**
+     * 执行跳转到下一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
+     */
+    public static void executeForwardAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.activity_forward_enter, R.anim.activity_forward_exit);
+    }
+
+    /**
+     * 执行回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
+     */
+    public static void executeBackwardAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.activity_backward_enter, R.anim.activity_backward_exit);
+    }
+
+    /**
+     * 执行滑动返回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
+     */
+    public static void executeSwipeBackAnim(Activity activity) {
+        activity.overridePendingTransition(R.anim.activity_swipeback_enter, R.anim.activity_swipeback_exit);
     }
 
     /**

@@ -12,9 +12,9 @@ import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
 /**
+ * @author : linguoding
  * @Package com.daoda.aijiacommunity.common.rx
  * @作 用:用rxjava实现的eventbus
- * @创 建 人: linguoding
  * @日 期: 2016-01-18
  */
 public class RxBus {
@@ -42,7 +42,7 @@ public class RxBus {
         return mBus;
     }
 
-    public static boolean hasObservers() {
+    public boolean hasObservers() {
         return getInstance().getBus().hasObservers();
     }
 
@@ -57,14 +57,14 @@ public class RxBus {
     }
 
     public static <T> Observable<T> toObservable(Class<T> clazz) {
-        return getInstance().toObservable().ofType(clazz).observeOn(AndroidSchedulers.mainThread());
+        return getInstance().getBus().ofType(clazz).observeOn(AndroidSchedulers.mainThread());
     }
 
     public static <T> Observable<T> toObservableAndBindToLifecycle(Class<T> clazz, LifecycleProvider lifecycleProvider) {
-        return getInstance().toObservable(clazz).compose(lifecycleProvider.bindToLifecycle());
+        return toObservable(clazz).compose(lifecycleProvider.bindToLifecycle());
     }
 
     public static <T> Observable<T> toObservableAndBindUntilStop(Class<T> clazz, LifecycleProvider lifecycleProvider) {
-        return getInstance().toObservable(clazz).compose(lifecycleProvider.bindUntilEvent(lifecycleProvider instanceof RxAppCompatActivity ? ActivityEvent.STOP : FragmentEvent.STOP));
+        return toObservable(clazz).compose(lifecycleProvider.bindUntilEvent(lifecycleProvider instanceof RxAppCompatActivity ? ActivityEvent.STOP : FragmentEvent.STOP));
     }
 }

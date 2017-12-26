@@ -1,5 +1,8 @@
 package com.hao.common.base;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
@@ -8,6 +11,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.ViewStubCompat;
@@ -38,13 +42,14 @@ import rx.functions.Action1;
  * @创 建 人: linguoding 邮箱：linggoudingg@gmail.com
  * @日 期: 2016年12月14日  11:31
  */
-public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppCompatActivity<P> implements
-        TitleBar.Delegate, EasyPermissions.PermissionCallbacks, SwipeBackHelper.Delegate {
+public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppCompatActivity<P>
+        implements TitleBar.Delegate, EasyPermissions.PermissionCallbacks, SwipeBackHelper.Delegate {
     protected MaterialDialog mLoadingDialog;
 
     protected Toolbar mToolbar;
     protected TitleBar mTitleBar;
     public SwipeBackHelper mSwipeBackHelper;
+    private AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,8 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
         initContentView();
         setStatusBar();
         initView(savedInstanceState);
-        setListener();
         processLogic(savedInstanceState);
+        setListener();
     }
 
     protected void addFragment(int containerViewId, Fragment fragment) {
@@ -79,6 +84,7 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
         } else if (getTopBarType() == TopBarType.ToolBar) {
             initToolbarContentView();
         }
+
         bindView();
     }
 
@@ -87,6 +93,7 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
     }
 
 
+    @SuppressLint("RestrictedApi")
     private void initTitleBarContentView() {
         super.setContentView(isLinear() ? R.layout.rootlayout_linear : R.layout.rootlayout_merge);
         ViewStubCompat toolbarVs = getViewById(R.id.toolbarVs);
@@ -101,6 +108,7 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
         viewStub.inflate();
     }
 
+    @SuppressLint("RestrictedApi")
     private void initToolbarContentView() {
         super.setContentView(isLinear() ? R.layout.rootlayout_linear : R.layout.rootlayout_merge);
 
@@ -138,18 +146,25 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
     private void initSwipeBackFinish() {
         mSwipeBackHelper = new SwipeBackHelper(this, this);
 
+        // 「必须在 Application 的 onCreate 方法中执行 SwipeBackHelper.init 来初始化滑动返回」
+        // 下面几项可以不配置，这里只是为了讲述接口用法。
+
         // 设置滑动返回是否可用。默认值为 true
         mSwipeBackHelper.setSwipeBackEnable(true);
         // 设置是否仅仅跟踪左侧边缘的滑动返回。默认值为 true
         mSwipeBackHelper.setIsOnlyTrackingLeftEdge(true);
         // 设置是否是微信滑动返回样式。默认值为 true
         mSwipeBackHelper.setIsWeChatStyle(true);
-        // 设置阴影资源 id。默认值为 R.drawable.swipebacklayout_shadow
+        // 设置阴影资源 id。默认值为 R.drawable.bga_sbl_shadow
         mSwipeBackHelper.setShadowResId(R.drawable.swipebacklayout_shadow);
         // 设置是否显示滑动返回的阴影效果。默认值为 true
         mSwipeBackHelper.setIsNeedShowShadow(true);
         // 设置阴影区域的透明度是否根据滑动的距离渐变。默认值为 true
         mSwipeBackHelper.setIsShadowAlphaGradient(true);
+        // 设置触发释放后自动滑动返回的阈值，默认值为 0.3f
+        mSwipeBackHelper.setSwipeBackThreshold(0.3f);
+        // 设置底部导航条是否悬浮在内容上，默认值为 false
+        mSwipeBackHelper.setIsNavigationBarOverlap(false);
     }
 
     /**
@@ -163,7 +178,23 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
     }
 
     protected void setStatusBar() {
-        setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        setStatusBarColor(getResources().getColor(android.R.color.white));
+        setDarkStatusIcon(true);
+    }
+
+    public void setDarkStatusIcon(boolean bDark) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decorView = getWindow().getDecorView();
+            if (decorView != null) {
+                int vis = decorView.getSystemUiVisibility();
+                if (bDark) {
+                    vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                } else {
+                    vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                }
+                decorView.setSystemUiVisibility(vis);
+            }
+        }
     }
 
     /**
@@ -320,6 +351,55 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
         }
     }
 
+
+    protected AlertDialog showStandardDialog(String title, String msg,
+                                             DialogInterface.OnClickListener onClickListener,
+                                             boolean isPromptDialog) {
+
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+
+        if (isPromptDialog) {
+            mDialog = new AlertDialog.Builder(this).setPositiveButton(
+                    R.string.sure, onClickListener).create();
+        } else {
+            mDialog = new AlertDialog.Builder(this)
+                    .setPositiveButton(R.string.sure, onClickListener)
+                    .setNegativeButton(R.string.cancel, null).create();
+        }
+
+        if (title != null) {
+            mDialog.setTitle(title);
+        } else {
+            mDialog.setTitle(getString(R.string.prompt));
+        }
+        if (msg != null) {
+            mDialog.setMessage(msg);
+        }
+        mDialog.show();
+
+        return mDialog;
+    }
+
+    protected AlertDialog showStandardDialog(String msg,
+                                             DialogInterface.OnClickListener onClickListener) {
+        String title = getString(R.string.prompt);
+        return showStandardDialog(title, msg, onClickListener, false);
+    }
+
+    protected AlertDialog showPromptDialog(String msg) {
+        String title = getString(R.string.prompt);
+        return showStandardDialog(title, msg, null, true);
+    }
+
+    protected void dismissAlertDialog() {
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+    }
+
+
     @Override
     public void setTitle(CharSequence title) {
         if (getTopBarType() == TopBarType.None) {
@@ -376,4 +456,11 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusRxAppComp
     public void onSwipeBackLayoutExecuted() {
         mSwipeBackHelper.swipeBackward();
     }
+
+    @Override
+    public P getPresenter() {
+        return super.getPresenter();
+    }
+
+
 }

@@ -1,10 +1,24 @@
-package com.hao.common.widget.swipeback;
+/*
+ * Copyright (C) 2012 The Android Open Source Project
+ * Copyright 2016 bingoogolapple
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package com.hao.common.widget.swipeback;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -20,6 +34,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
@@ -30,19 +45,14 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.hao.common.R;
-import com.hao.common.manager.AppManager;
 import com.hao.common.utils.UIUtil;
 
 import java.lang.reflect.Field;
@@ -50,7 +60,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- * 作者:linguoding 邮箱：linggoudingg@gmail.com
+ * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/12/27 下午5:09
  * 描述:通过修改 support-v4 包中 SlidingPaneLayout 的源码来实现滑动返回布局
  */
@@ -183,44 +193,43 @@ public class SwipeBackLayout extends ViewGroup {
      */
     private boolean mIsOnlyTrackingLeftEdge = true;
     /**
-     * 是否是微信滑动返回样式。如果需要启用微信滑动返回样式，必须在 Application 的 onCreate 方法中执行 BGASwipeBackManager.getInstance().init(this)
-     */
-    private boolean mIsWeChatStyle = true;
-    /**
-     * 是否显示滑动返回的阴影效果
-     */
-    private boolean mIsNeedShowShadow = true;
-    /**
-     * 阴影区域的透明度是否根据滑动的距离渐变
-     */
-    private boolean mIsShadowAlphaGradient = true;
-    /**
-     * 阴影资源 id
-     */
-    private int mShadowResId = R.drawable.swipebacklayout_shadow;
-    /**
      * 滑动返回时的阴影视图
      */
-    private View mShadowView;
+    private SwipeBackShadowView mShadowView;
     /**
      * 内容视图
      */
     private View mContentView;
-
+    /**
+     * 当前 Activity
+     */
     private Activity mActivity;
+    /**
+     * 触发滑动返回的滑动范围
+     */
+    private float mSwipeBackThreshold = 0.3f;
+    /**
+     * 底部导航条是否悬浮在内容上
+     */
+    private boolean mIsNavigationBarOverlap = false;
+    /**
+     * 是否正在滑动
+     */
+    private boolean mIsSliding;
+    //===========================新增END=======================
 
     /**
      * 将该滑动返回控件添加到 Activity 上
      *
      * @param activity
      */
-    public void attachToActivity(Activity activity) {
+    void attachToActivity(Activity activity) {
         mActivity = activity;
 
         setSliderFadeColor(Color.TRANSPARENT);
 
-        mShadowView = new View(activity);
-        setIsNeedShowShadow(mIsNeedShowShadow);
+        mShadowView = new SwipeBackShadowView(activity);
+
         addView(mShadowView, 0, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
@@ -235,7 +244,7 @@ public class SwipeBackLayout extends ViewGroup {
      *
      * @param swipeBackEnable
      */
-    public void setSwipeBackEnable(boolean swipeBackEnable) {
+    void setSwipeBackEnable(boolean swipeBackEnable) {
         mSwipeBackEnable = swipeBackEnable;
     }
 
@@ -244,50 +253,78 @@ public class SwipeBackLayout extends ViewGroup {
      *
      * @param isOnlyTrackingLeftEdge
      */
-    public void setIsOnlyTrackingLeftEdge(boolean isOnlyTrackingLeftEdge) {
+    void setIsOnlyTrackingLeftEdge(boolean isOnlyTrackingLeftEdge) {
         mIsOnlyTrackingLeftEdge = isOnlyTrackingLeftEdge;
     }
 
     /**
-     * 设置是否是微信滑动返回样式。默认值为 true。如果需要启用微信滑动返回样式，必须在 Application 的 onCreate 方法中执行 BGASwipeBackManager.getInstance().init(this)
+     * 设置是否是微信滑动返回样式
      */
-    public void setIsWeChatStyle(boolean isWeChatStyle) {
-        mIsWeChatStyle = isWeChatStyle;
+    void setIsWeChatStyle(boolean isWeChatStyle) {
+        mShadowView.setIsWeChatStyle(isWeChatStyle);
     }
 
     /**
-     * 设置阴影资源 id。默认值为 R.drawable.bga_sbl_shadow
+     * 设置触发释放后自动滑动返回的阈值
+     *
+     * @param threshold 触发释放后自动滑动返回的阈值
+     */
+    void setSwipeBackThreshold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
+        mSwipeBackThreshold = threshold;
+    }
+
+    /**
+     * 设置底部导航条是否悬浮在内容上
+     *
+     * @param overlap
+     */
+    void setIsNavigationBarOverlap(boolean overlap) {
+        mIsNavigationBarOverlap = overlap;
+    }
+
+    /**
+     * 是否正在滑动
+     *
+     * @return
+     */
+    boolean isSliding() {
+        return this.mIsSliding;
+    }
+
+    /**
+     * 滑动返回是否可用
+     *
+     * @return
+     */
+    private boolean isSwipeBackEnable() {
+        return mSwipeBackEnable && SwipeBackManager.getInstance().isSwipeBackEnable();
+    }
+
+    /**
+     * 设置阴影资源 id
      *
      * @param shadowResId
      */
-    public void setShadowResId(@DrawableRes int shadowResId) {
-        mShadowResId = shadowResId;
-        setIsNeedShowShadow(mIsNeedShowShadow);
+    void setShadowResId(@DrawableRes int shadowResId) {
+        mShadowView.setShadowResId(shadowResId);
     }
 
     /**
-     * 设置是否显示滑动返回的阴影效果。默认值为 true
+     * 设置是否显示滑动返回的阴影效果
      *
      * @param isNeedShowShadow
      */
-    public void setIsNeedShowShadow(boolean isNeedShowShadow) {
-        mIsNeedShowShadow = isNeedShowShadow;
-        if (mShadowView != null) {
-            if (mIsNeedShowShadow) {
-                mShadowView.setBackgroundResource(mShadowResId);
-            } else {
-                mShadowView.setBackgroundResource(android.R.color.transparent);
-            }
-        }
+    void setIsNeedShowShadow(boolean isNeedShowShadow) {
+        mShadowView.setIsNeedShowShadow(isNeedShowShadow);
     }
 
     /**
-     * 设置阴影区域的透明度是否根据滑动的距离渐变。默认值为 true
+     * 设置阴影区域的透明度是否根据滑动的距离渐变
      *
      * @param isShadowAlphaGradient
      */
-    public void setIsShadowAlphaGradient(boolean isShadowAlphaGradient) {
-        mIsShadowAlphaGradient = isShadowAlphaGradient;
+    void setIsShadowAlphaGradient(boolean isShadowAlphaGradient) {
+        mShadowView.setIsShadowAlphaGradient(isShadowAlphaGradient);
     }
     // ======================== 新加的 END ========================
 
@@ -428,9 +465,8 @@ public class SwipeBackLayout extends ViewGroup {
 
     void dispatchOnPanelSlide(View panel) {
         // ======================== 新加的 START ========================
-        if (mIsWeChatStyle) {
-            AppManager.onPanelSlide(mSlideOffset);
-        }
+        mShadowView.setShadowAlpha(1.0f - mSlideOffset);
+        mShadowView.onPanelSlide(mSlideOffset);
         // ======================== 新加的 END ========================
 
         if (mPanelSlideListener != null) {
@@ -438,18 +474,20 @@ public class SwipeBackLayout extends ViewGroup {
         }
     }
 
-    void dispatchOnPanelOpened(View panel) {
+    void dispatchOnPanelOpened(final View panel) {
         if (mPanelSlideListener != null) {
             mPanelSlideListener.onPanelOpened(panel);
         }
         sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+
+        // ======================== 新加的 START ========================
+        mShadowView.unBindPreActivity(true);
+        // ======================== 新加的 END ========================
     }
 
     void dispatchOnPanelClosed(View panel) {
         // ======================== 新加的 START ========================
-        if (mIsWeChatStyle) {
-            AppManager.onPanelClosed();
-        }
+        mShadowView.onPanelClosed();
         // ======================== 新加的 END ========================
 
         if (mPanelSlideListener != null) {
@@ -553,9 +591,13 @@ public class SwipeBackLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        // ======================== 新加的 START ========================
+//        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthSize = UIUtil.getRealScreenWidth(mActivity);
+//        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightSize = UIUtil.getRealScreenHeight(mActivity);
+        // ======================== 新加的 END ========================
 
         if (widthMode != MeasureSpec.EXACTLY) {
             if (isInEditMode()) {
@@ -587,7 +629,7 @@ public class SwipeBackLayout extends ViewGroup {
         }
 
         int layoutHeight = 0;
-        int maxLayoutHeight = 0;
+        int maxLayoutHeight = -1;
         switch (heightMode) {
             case MeasureSpec.EXACTLY:
                 layoutHeight = maxLayoutHeight = heightSize - getPaddingTop() - getPaddingBottom();
@@ -598,7 +640,13 @@ public class SwipeBackLayout extends ViewGroup {
         }
 
         // ======================== 新加的 START ========================
-        maxLayoutHeight -= UIUtil.getNavigationBarHeight(mActivity);
+        if (!mIsNavigationBarOverlap && UIUtil.isPortrait(mActivity)) {
+            maxLayoutHeight -= UIUtil.getNavigationBarHeight(mActivity);
+        }
+
+        if (mIsNavigationBarOverlap && !UIUtil.isPortrait(mActivity)) {
+            widthSize += UIUtil.getNavigationBarHeight(mActivity);
+        }
         // ======================== 新加的 END ========================
 
         float weightSum = 0;
@@ -630,7 +678,9 @@ public class SwipeBackLayout extends ViewGroup {
 
                 // If we have no width, weight is the only contributor to the final size.
                 // Measure this view on the weight pass only.
-                if (lp.width == 0) continue;
+                if (lp.width == 0) {
+                    continue;
+                }
             }
 
             int childWidthSpec;
@@ -885,7 +935,7 @@ public class SwipeBackLayout extends ViewGroup {
         }
 
         // ======================== 新加的 START ========================
-        if (!mSwipeBackEnable) {
+        if (!isSwipeBackEnable()) {
             mDragHelper.cancel();
             return super.onInterceptTouchEvent(ev);
         }
@@ -940,7 +990,7 @@ public class SwipeBackLayout extends ViewGroup {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // ======================== 新加的 START ========================
-        if (!mSwipeBackEnable) {
+        if (!isSwipeBackEnable()) {
             return super.onTouchEvent(ev);
         }
         // ======================== 新加的 END ========================
@@ -1092,12 +1142,7 @@ public class SwipeBackLayout extends ViewGroup {
         }
 
         // ======================== 新加的 START ========================
-        if (mIsNeedShowShadow && mShadowView != null) {
-            if (mIsShadowAlphaGradient) {
-                ViewCompat.setAlpha(mShadowView, 1.0f - mSlideOffset);
-            }
-            ViewCompat.setTranslationX(mShadowView, -mShadowView.getMeasuredWidth() + newLeft);
-        }
+        ViewCompat.setTranslationX(mShadowView, -mShadowView.getMeasuredWidth() + newLeft);
         // ======================== 新加的 END ========================
 
         dispatchOnPanelSlide(mSlideableView);
@@ -1330,15 +1375,16 @@ public class SwipeBackLayout extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View v = getChildAt(i);
-            if (v == mSlideableView) continue;
+            if (v == mSlideableView) {
+                continue;
+            }
 
             final int oldOffset = (int) ((1 - mParallaxOffset) * mParallaxBy);
             mParallaxOffset = slideOffset;
             final int newOffset = (int) ((1 - slideOffset) * mParallaxBy);
             final int dx = oldOffset - newOffset;
 
-            if (isLayoutRtl) v.offsetLeftAndRight(-dx);
-            else v.offsetLeftAndRight(dx);
+            v.offsetLeftAndRight(isLayoutRtl ? -dx : dx);
 
             if (dimViews) {
                 dimChildView(v, isLayoutRtl ? mParallaxOffset - 1
@@ -1456,7 +1502,7 @@ public class SwipeBackLayout extends ViewGroup {
             if (mIsOnlyTrackingLeftEdge) {
                 return false;
             }
-            return mSwipeBackEnable && ((LayoutParams) child.getLayoutParams()).slideable;
+            return isSwipeBackEnable() && ((LayoutParams) child.getLayoutParams()).slideable;
             // ======================== 新加的 END ========================
         }
 
@@ -1471,11 +1517,22 @@ public class SwipeBackLayout extends ViewGroup {
                     dispatchOnPanelOpened(mSlideableView);
                     mPreservedOpenState = true;
                 }
+                // ======================== 新加的 START ========================
+//            }
+                mIsSliding = false;
+            } else {
+                mIsSliding = true;
             }
+            // ======================== 新加的 END ========================
         }
 
         @Override
         public void onViewCaptured(View capturedChild, int activePointerId) {
+            // ======================== 新加的 START ========================
+            if (isSwipeBackEnable()) {
+                mShadowView.bindPreActivity();
+            }
+            // ======================== 新加的 END ========================
             // Make all child views visible in preparation for sliding things around
             setAllChildrenVisible();
         }
@@ -1493,14 +1550,14 @@ public class SwipeBackLayout extends ViewGroup {
             int left;
             if (isLayoutRtlSupport()) {
                 int startToRight = getPaddingRight() + lp.rightMargin;
-                if (xvel < 0 || (xvel == 0 && mSlideOffset > 0.5f)) {
+                if (xvel < 0 || (xvel == 0 && mSlideOffset > mSwipeBackThreshold)) {
                     startToRight += mSlideRange;
                 }
                 int childWidth = mSlideableView.getWidth();
                 left = getWidth() - startToRight - childWidth;
             } else {
                 left = getPaddingLeft() + lp.leftMargin;
-                if (xvel > 0 || (xvel == 0 && mSlideOffset > 0.5f)) {
+                if (xvel > 0 || (xvel == 0 && mSlideOffset > mSwipeBackThreshold)) {
                     left += mSlideRange;
                 }
             }
@@ -1543,14 +1600,14 @@ public class SwipeBackLayout extends ViewGroup {
             // ======================== 新加的 START ========================
 //            mDragHelper.captureChildView(mSlideableView, pointerId);
 
-            if (mSwipeBackEnable) {
+            if (isSwipeBackEnable()) {
                 mDragHelper.captureChildView(mSlideableView, pointerId);
             }
             // ======================== 新加的 END ========================
         }
     }
 
-    public static class LayoutParams extends ViewGroup.MarginLayoutParams {
+    public static class LayoutParams extends MarginLayoutParams {
         private static final int[] ATTRS = new int[]{
                 android.R.attr.layout_weight
         };
@@ -1582,7 +1639,7 @@ public class SwipeBackLayout extends ViewGroup {
             super(width, height);
         }
 
-        public LayoutParams(android.view.ViewGroup.LayoutParams source) {
+        public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
         }
 
@@ -1807,4 +1864,3 @@ public class SwipeBackLayout extends ViewGroup {
         return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
     }
 }
-

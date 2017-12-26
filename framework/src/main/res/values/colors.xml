@@ -7,7 +7,7 @@
     <color name="base_grey_bg">#EAEAEA</color>
     <color name="base_grey_deep">#949494</color>
     <color name="base_red">#EE2C2C</color>
-    <color name="base_white_bg">#FFFFFF</color>
+    <color name="base_white_bg">#ffffff</color>
 
     <color name="colorPrimary">#92cfe6</color>
     <color name="colorPrimaryDark">#6FBEDC</color>
@@ -25,8 +25,7 @@
 
     <color name="adapter_divider">#dedede</color>
     <color name="adapter_line">#dedede</color>
-
-    <color name="vibe_line">#ff1b9cff</color>
+    <color name="pp_photo_selected_mask">#4D000000</color>
 
 
 </resources>

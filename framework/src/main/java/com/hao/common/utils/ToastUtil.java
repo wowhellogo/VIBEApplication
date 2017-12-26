@@ -16,8 +16,8 @@
 
 package com.hao.common.utils;
 
+import android.content.Context;
 import android.support.annotation.StringRes;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.hao.common.R;
@@ -27,16 +27,29 @@ import com.hao.common.rx.RxUtil;
 
 public class ToastUtil {
 
+    private static Toast toast;
+
     private ToastUtil() {
     }
 
     public static void show(CharSequence text) {
         if (StringUtil.isNotEmpty(text)) {
-            Toast toast;
             if (text.length() < 10) {
                 toast = Toast.makeText(AppManager.getApp(), text, Toast.LENGTH_SHORT);
             } else {
                 toast = Toast.makeText(AppManager.getApp(), text, Toast.LENGTH_LONG);
+            }
+            DrawableUtil.tintBackground(toast.getView(), R.color.colorPrimary);
+            toast.show();
+        }
+    }
+
+    public static void show(Context context, CharSequence text) {
+        if (StringUtil.isNotEmpty(text)) {
+            if (text.length() < 10) {
+                toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+            } else {
+                toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
             }
             DrawableUtil.tintBackground(toast.getView(), R.color.colorPrimary);
             toast.show();
@@ -64,5 +77,16 @@ public class ToastUtil {
         if (AppManager.getInstance().isBuildDebug()) {
             showSafe("Debug: " + text);
         }
+    }
+
+    /**
+     * toast取消
+     */
+    public static void cancel() {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+
     }
 }

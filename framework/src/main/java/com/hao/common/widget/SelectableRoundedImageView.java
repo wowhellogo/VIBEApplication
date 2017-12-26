@@ -539,8 +539,9 @@ public class SelectableRoundedImageView extends ImageView {
         }
 
         public void setCornerRadii(float[] radii) {
-            if (radii == null)
+            if (radii == null) {
                 return;
+            }
 
             if (radii.length != 8) {
                 throw new ArrayIndexOutOfBoundsException("radii[] needs 8 values");

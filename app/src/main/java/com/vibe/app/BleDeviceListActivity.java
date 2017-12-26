@@ -41,8 +41,10 @@ public class BleDeviceListActivity extends BaseLoadActivity<LoadPresenter, RxBle
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         setTitle("explore vibes");
+        setLoadingMoreEnabled(false);
         mLoadingLayout.setStatus(LoadingLayout.Success);
         rxBleClient = RxBleClient.create(this);
+
         rxBleClient.scanBleDevices(
                 new ScanSettings.Builder()
                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
@@ -69,16 +71,14 @@ public class BleDeviceListActivity extends BaseLoadActivity<LoadPresenter, RxBle
     }
 
     private void addItem(RxBleDevice device) {
-        if (mAdapter.getData() != null && mAdapter.getData().size() > 0) {
-            for (RxBleDevice bleDevice : mAdapter.getData()) {
-                if (!bleDevice.getMacAddress()
-                        .equals(device.getMacAddress())) {
-                    mAdapter.addFirstItem(device);
+        if (mAdapter.getData() != null
+                && mAdapter.getData().size() > 0) {
+            for (RxBleDevice rxBleDevice1 : mAdapter.getData()) {
+                if (rxBleDevice1.getMacAddress().equals(device.getMacAddress())) {
+                    return;
                 }
             }
-        } else {
-            mAdapter.addFirstItem(device);
-
         }
+        mAdapter.addLastItem(device);
     }
 }

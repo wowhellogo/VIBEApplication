@@ -52,18 +52,24 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
         mBinding.btnCloseLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCMD();
+                sendCMD(stopCmd());
+            }
+        });
+        mBinding.btnOpenLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(startCmd());
             }
         });
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        sendCMD();
+
     }
 
 
-    private void sendCMD() {
+    private void sendCMD(byte[] cmd) {
         subscription = mRxBleClient.scanBleDevices(new ScanSettings.Builder()
                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                         .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
@@ -112,7 +118,7 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                 }).flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
-                        return mRxBleConnection.writeCharacteristic(Constant.WRITE_SERVICE_UUID_COMMUNICATION, stopCmd());//开锁指令写入GATT
+                        return mRxBleConnection.writeCharacteristic(Constant.WRITE_SERVICE_UUID_COMMUNICATION, cmd);//开锁指令写入GATT
                     }
                 }).subscribe(new Action1<byte[]>() {
                     @Override
@@ -125,6 +131,17 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
 
 
     private byte[] stopCmd() {
+        byte[] bts = new byte[5];
+        bts[0] = (byte) 0x08;
+        bts[1] = 0x00;
+        bts[2] = 0x00;
+        bts[3] = 0x00;
+        bts[4] = 0x00;
+        return bts;
+
+    }
+
+    private byte[] startCmd() {
         byte[] bts = new byte[5];
         bts[0] = (byte) 0x08;
         bts[1] = 0x01;

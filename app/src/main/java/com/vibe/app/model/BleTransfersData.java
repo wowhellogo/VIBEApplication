@@ -12,60 +12,31 @@ import com.vibe.app.utils.ByteUtil;
 
 
 public class BleTransfersData {
-    public final static int CMD = 0xAA;
-    public final static int DATA = 0xBB;
-    private final static int MAX_LENGTH = 28;//最大长度28
-    public int head = CMD;//包头,默认为指令包
     public Cmd mCmd;
-    private int length;
     private byte[] content;//转输内容
-    private byte check;//包的逐位相加
-
-    public int getHead() {
-        return head;
-    }
+    private final static int length = 5;
 
     public Cmd getCmd() {
         return mCmd;
-    }
-
-    public int getLength() {
-        return length;
     }
 
     public byte[] getContent() {
         return content;
     }
 
-    public byte getCheck() {
-        return check;
-    }
-
-    private BleTransfersData(int head, int length, Cmd cmd, byte[] content, byte check) {
-        this.head = head;
-        this.length = length;
-        mCmd = cmd;
+    public BleTransfersData(Cmd mCmd, byte[] content) {
+        this.mCmd = mCmd;
         this.content = content;
-        this.check = check;
     }
-
 
     public static class Builder {
-        public int head = CMD;//包头
         public Cmd mCmd;
-        private int length;
         private byte[] content;//转输内容
-        private byte check;//包的逐位相加
 
         public BleTransfersData builder() {
-            return new BleTransfersData(head, length, mCmd, content, check);
+            return new BleTransfersData(mCmd, content);
         }
 
-
-        public Builder setHead(int head) {
-            this.head = head;
-            return this;
-        }
 
         public Builder setCmd(Cmd cmd) {
             mCmd = cmd;
@@ -74,22 +45,11 @@ public class BleTransfersData {
 
         public Builder setContent(byte[] content) {
             this.content = content;
-            this.length = this.content.length + 4;
             return this;
         }
 
         public Builder setContent(String content) {
             setContent(conversionAsciiBytesByString(content));
-            return this;
-        }
-
-        public Builder setLength(int length) {
-            this.length = length;
-            return this;
-        }
-
-        public Builder setCheck(byte check) {
-            this.check = check;
             return this;
         }
     }
@@ -101,17 +61,13 @@ public class BleTransfersData {
      * @return
      */
     public byte[] dataPackage() {
-        byte[] bts = new byte[length];
-        bts[0] = (byte) this.head;
-        bts[1] = (byte) this.length;
-        bts[2] = (byte) mCmd.cmd;
-        this.check = (byte) (bts[0] + bts[1] + bts[2]);
+        byte[] bts = {0x00, 0x00, 0x00, 0x00, 0x00};
+        bts[0] = mCmd.cmd;
         for (int i = 0; i < content.length; i++) {
-            bts[i + 3] = content[i];
-            this.check += content[i];
+            bts[i + 1] = content[i];
         }
-        bts[length - 1] = this.check;
         return bts;
+
     }
 
     /**
@@ -120,14 +76,11 @@ public class BleTransfersData {
      * @return
      */
     public static BleTransfersData parsePackage(byte[] bts) {
-        byte content[] = new byte[bts.length - 4];
-        System.arraycopy(bts, 3, content, 0, content.length);
+        byte content[] = new byte[bts.length - 1];
+        System.arraycopy(bts, 1, content, 0, content.length);
         return new Builder()
-                .setHead(bts[0])
-                .setLength(bts[1])
-                .setCmd(Cmd.valueCmd(bts[2]))
+                .setCmd(Cmd.valueCmd(bts[0]))
                 .setContent(content)
-                .setCheck(bts[bts.length - 1])
                 .builder();
     }
 
@@ -147,18 +100,13 @@ public class BleTransfersData {
 
     //指令
     public enum Cmd {
-        OTA(0XFF),//OTA升级
-        RE_TRANSFER(0XFB),//数据重传
-        RE_FACTORY(0XF0),//恢复出厂
-        RE_STATE(0XF1),//恢复状态
-        SET_DATE(0XF2),//设置时间
-        OPEN_LOCK(0x01),//开锁
-        CLOSE_LOCK(0X02),//关锁
-        SYN_PASSWORD(0X11),//同步密码
-        SYN_TEMP_PASSWORD(0X12),//同步一次性密码
-        SET_ADMIN_PASSWORD(0X13),//设置管理密码
-        TRANSFER_PASSWORD(0XA1),//传输密码
-        HAS_CMD(0XB1);//哈希指令
+        SET_MODE(0X01),//设置模式或调节，0~2 （1：加，2：减）
+        SET_STRENGTH(0X02),//设置强度或调节，0~9（1：加，2：减）
+        SET_TIME_DURATION(0X04),//工作时长设置（0~25分钟）
+        SET_ON_OFF(0X08),//开始停止设置（0：停止，1：开始）
+        OTA(0X10),//请求升级（0：取消，1：开始）
+        //设置工作状态,(工作时间：0~25分钟，设置时长：0~25分钟，当前强度：0~9，当前模式：0~2，开始停止状态：0：停止，1：开始，充电状态：0：正常，1：充电中)
+        SET_JOB_STATE(0x20);
         private byte cmd;
 
         Cmd(int cmd) {
@@ -189,14 +137,4 @@ public class BleTransfersData {
         return bytes;
     }
 
-    @Override
-    public String toString() {
-        return "BleTransfersData{" +
-                "head=" + head +
-                ", mCmd=" + mCmd +
-                ", length=" + length +
-                ", content=" + ByteUtil.bytesToHexString(content) +
-                ", check=" + check +
-                '}';
-    }
 }

@@ -12,6 +12,7 @@ import com.polidea.rxandroidble.scan.ScanFilter;
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.vibe.app.databinding.ActivityMainTestBinding;
+import com.vibe.app.model.BleTransfersData;
 import com.vibe.app.model.Constant;
 import com.vibe.app.utils.ByteUtil;
 
@@ -20,6 +21,7 @@ import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 /**
  * @author linguoding
@@ -61,15 +63,52 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                 sendCMD(startCmd());
             }
         });
+
+        mBinding.btnSetMode1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(setMode1());
+            }
+        });
+
+        mBinding.bntSetMode2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(setMode2());
+            }
+        });
+
+        mBinding.btnSetModel3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(setMode3());
+            }
+        });
+
+        mBinding.btnSetStrength.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(setStrength());
+            }
+        });
+
+        mBinding.btnSetTime1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCMD(new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_TIME_DURATION)
+                        .setContent(0x01,0x00).builder().dataPackage());
+            }
+        });
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        scanConnect();
     }
 
 
-    private void sendCMD(byte[] cmd) {
+    private void scanConnect() {
+
         subscription = mRxBleClient.scanBleDevices(new ScanSettings.Builder()
                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                         .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
@@ -107,50 +146,96 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                         observable.subscribe(new Action1<byte[]>() {
                             @Override
                             public void call(byte[] bytes) {
-                                Logger.e("返回的结果：" + ByteUtil.bytesToHexString(bytes));
-                                if (subscription != null) {
-                                    subscription.unsubscribe();
-                                    subscription = null;
-                                }
+                                Logger.e("返回的内容："+ByteUtil.bytesToHexString(bytes));
                             }
                         });
                     }
                 }).flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
-                        return mRxBleConnection.writeCharacteristic(Constant.WRITE_SERVICE_UUID_COMMUNICATION, cmd);//开锁指令写入GATT
+                        return mRxBleConnection.setupNotification(Constant.BATTERY_LEVEL).flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
+                            @Override
+                            public Observable<byte[]> call(Observable<byte[]> observable) {
+                                return observable;
+                            }
+                        });
                     }
                 }).subscribe(new Action1<byte[]>() {
                     @Override
                     public void call(byte[] bytes) {
-                        Logger.e("发送指令：" + ByteUtil.bytesToHexString(bytes));
+                        Logger.e("电量："+ByteUtil.bytesToHexString(bytes));
+                        Logger.e(ByteUtil.getString(bytes,"utf-8"));
+                    }
+                });
+    }
 
+
+    public void sendCMD(byte[] bts) {
+        mRxBleConnection.writeCharacteristic(Constant.WRITE_SERVICE_UUID_COMMUNICATION, bts)
+                .subscribe(new Action1<byte[]>() {
+                    @Override
+                    public void call(byte[] bytes) {
+                        Logger.e("发送的指令：" + ByteUtil.bytesToHexString(bytes));
                     }
                 });
     }
 
 
     private byte[] stopCmd() {
-        byte[] bts = new byte[5];
+        /*byte[] bts = new byte[5];
         bts[0] = (byte) 0x08;
         bts[1] = 0x00;
         bts[2] = 0x00;
         bts[3] = 0x00;
         bts[4] = 0x00;
-        return bts;
+        return bts;*/
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_ON_OFF)
+                .setContent(0x00)
+                .builder().dataPackage();
 
     }
 
     private byte[] startCmd() {
-        byte[] bts = new byte[5];
+       /* byte[] bts = new byte[5];
         bts[0] = (byte) 0x08;
         bts[1] = 0x01;
         bts[2] = 0x00;
         bts[3] = 0x00;
         bts[4] = 0x00;
-        return bts;
-
+        return bts;*/
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_ON_OFF)
+                .setContent(0x01)
+                .builder().dataPackage();
     }
+
+
+    public byte[] setMode1() {
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_MODE)
+                .setContent(0x00, 0x00)
+                .builder().dataPackage();
+    }
+
+    public byte[] setMode2() {
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_MODE)
+                .setContent(0x00, 0x01)
+                .builder().dataPackage();
+    }
+    public byte[] setMode3() {
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_MODE)
+                .setContent(0x00, 0x02)
+                .builder().dataPackage();
+    }
+
+    public byte[] setStrength(){
+        return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_STRENGTH)
+                .setContent(0x00,0x01)
+                .builder().dataPackage();
+    }
+
+
+
+
+
 
 
 }

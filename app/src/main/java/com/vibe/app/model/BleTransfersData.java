@@ -24,7 +24,7 @@ public class BleTransfersData {
         return content;
     }
 
-    public BleTransfersData(Cmd mCmd, byte[] content) {
+    private BleTransfersData(Cmd mCmd, byte[] content) {
         this.mCmd = mCmd;
         this.content = content;
     }
@@ -43,13 +43,17 @@ public class BleTransfersData {
             return this;
         }
 
-        public Builder setContent(byte[] content) {
-            this.content = content;
+
+        public Builder setContent(int...content){
+            this.content=new byte[content.length];
+            for(int i=0;i<content.length;i++){
+                this.content[i]= (byte) content[i];
+            }
             return this;
         }
 
-        public Builder setContent(String content) {
-            setContent(conversionAsciiBytesByString(content));
+        public Builder setContent(byte[] content){
+            this.content=content;
             return this;
         }
     }
@@ -100,8 +104,8 @@ public class BleTransfersData {
 
     //指令
     public enum Cmd {
-        SET_MODE(0X01),//设置模式或调节，0~2 （1：加，2：减）
-        SET_STRENGTH(0X02),//设置强度或调节，0~9（1：加，2：减）
+        SET_MODE(0X01),//设置模式或调节，           第二位  （1：加，2：减）          第三位：0~2（0：连续，1：间隔，2：波浪）
+        SET_STRENGTH(0X02),//设置强度或调节         第二位：（1：加，2：减）          第三位：0~9
         SET_TIME_DURATION(0X04),//工作时长设置（0~25分钟）
         SET_ON_OFF(0X08),//开始停止设置（0：停止，1：开始）
         OTA(0X10),//请求升级（0：取消，1：开始）

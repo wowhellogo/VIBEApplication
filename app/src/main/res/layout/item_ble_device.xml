@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="95dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/windowBackground"
-    android:orientation="vertical">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:background="@color/windowBackground"
+                android:orientation="vertical">
 
     <View
         android:id="@+id/v_line"
@@ -23,12 +23,20 @@
         android:paddingTop="@dimen/margin_10"
         >
 
-        <ImageView
-            android:id="@+id/im_vibe_icon"
+        <RelativeLayout
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/ic_choice_orthovybe"
-            />
+            android:background="@drawable/shape_item_device_bg"
+            >
+
+            <ImageView
+                android:id="@+id/im_vibe_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/ic_vibe_logo"
+                />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,12 +45,13 @@
             android:gravity="center"
             android:orientation="vertical"
             >
+
             <TextView
                 android:id="@+id/tv_name"
-                android:textColor="@color/textPrimary"
-                android:textSize="@dimen/text_size_18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/textPrimary"
+                android:textSize="@dimen/text_size_18"
                 tools:text="名字"
                 />
 
@@ -50,7 +59,7 @@
                 android:id="@+id/tv_mac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="00:00:00:00:00" />
+                tools:text="00:00:00:00:00"/>
         </LinearLayout>
     </RelativeLayout>
 

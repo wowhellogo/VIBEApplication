@@ -1,11 +1,16 @@
 package com.vibe.app;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.hao.common.base.BaseLoadActivity;
 import com.hao.common.base.TopBarType;
 import com.hao.common.nucleus.presenter.LoadPresenter;
+import com.hao.common.rx.RxBus;
 import com.hao.common.rx.RxUtil;
+import com.hao.common.utils.SPUtil;
+import com.hao.common.utils.StringUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.widget.LoadingLayout;
 import com.polidea.rxandroidble.RxBleClient;
@@ -15,6 +20,8 @@ import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.vibe.app.adapter.BleDeviceAdapter;
+import com.vibe.app.model.Constant;
+import com.vibe.app.model.event.SelectDeviceEvent;
 
 import rx.functions.Action1;
 
@@ -68,6 +75,21 @@ public class BleDeviceListActivity extends BaseLoadActivity<LoadPresenter, RxBle
                     }
                 });
 
+    }
+
+    @Override
+    public void onRVItemClick(ViewGroup parent, View itemView, int position) {
+        //保存mac地址
+        RxBleDevice device = mAdapter.getItem(position);
+        if (!StringUtil.isEmpty(device.getName())
+                && device.getName().equals(BleDeviceAdapter.VIBE_DEVICE)) {
+            SPUtil.putString(Constant.MAC, device.getMacAddress());
+            SPUtil.putString(Constant.DEVICE_NAME, device.getName());
+            RxBus.send(new SelectDeviceEvent());
+            finish();
+        } else {
+            ToastUtil.show("This device is not vibe device");
+        }
     }
 
     private void addItem(RxBleDevice device) {

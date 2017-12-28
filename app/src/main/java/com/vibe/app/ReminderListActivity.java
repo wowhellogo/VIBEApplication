@@ -74,7 +74,7 @@ public class ReminderListActivity extends BaseActivity {
     protected void setListener() {
         getViewById(R.id.im_add).setOnClickListener(v -> {
             List<Reminder> reminders = new ArrayList<>();
-            reminders.add(new Reminder("myReminder", 1, 8, 15, 0, "love Reminder", 2, 1));
+            reminders.add(new Reminder("myReminder", 1, 20, 41, 0, "love Reminder", 2, 1));
             reminders.add(new Reminder("myReminder", 1, 9, 15, 0, "love Reminder", 2, 1));
             Observable.just(mDatabaseManager.insertOrReplaceList(reminders))
                     .compose(RxUtil.applySchedulersJobUI())

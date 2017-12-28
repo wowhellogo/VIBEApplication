@@ -25,8 +25,18 @@ public class VibeRecordAdapter extends BaseRecyclerViewAdapter<VibeRecord> {
     protected void fillData(BaseViewHolderHelper helper, int position, VibeRecord model) {
         helper.setText(R.id.tv_name, model.getVibeType().getName());
         helper.setText(R.id.tv_date, CalendarUtil.formatHourMinute(model.getCreateDate()));
-        helper.setText(R.id.tv_time, model.getDuration()+"min");
-        helper.setImageResource(R.id.im_vibe_icon, model.getVibeType().getIcon());
+        helper.setText(R.id.tv_time, model.getDuration() + "min");
+        if (model.getVibeType() != null) {
+            if (model.getVibeType().getMode() == 0) {
+                helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_pulse);
+            } else if (model.getVibeType().getMode() == 1) {
+                helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_vibration);
+            } else if (model.getVibeType().getMode() == 2) {
+                helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_wave);
+            } else {
+                helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_orthovybe);
+            }
+        }
 
     }
 }

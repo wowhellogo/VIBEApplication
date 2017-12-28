@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme.Transparent">
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -80,12 +81,29 @@
             android:configChanges="orientation"
             android:launchMode="singleTop"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
+
+
+        <service
+            android:name=".service.BleControlService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":gray"/>
+        <service
+            android:name=".service.BleControlService$GrayInnerService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":gray"/>
+        <service
+            android:name=".receiver.WakeReceiver$WakeNotifyService"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <service
+            android:name=".receiver.WakeReceiver$WakeGrayInnerService"
+            android:enabled="true"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

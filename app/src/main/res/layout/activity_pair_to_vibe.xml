@@ -8,9 +8,15 @@
               android:orientation="vertical"
     >
 
+    <View
+        android:id="@+id/fake_status_bar_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_20"
+        />
+
     <com.hao.common.widget.titlebar.TitleBar
         android:id="@+id/title_bar"
-        style="@style/TitleBar.NoBack"
+        style="@style/TitleBar"
         android:background="@android:color/transparent"
         app:bgatitlebar_titleText="Pair to vibe"
         app:bgatitlebar_titleTextColor="@color/colorPrimary"
@@ -29,16 +35,35 @@
         android:textSize="@dimen/text_size_14"
         />
 
-    <ImageView
-        android:id="@+id/im_pair"
+    <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_30"
-        android:src="@mipmap/ic_pair"
-        />
+        >
+
+        <ImageView
+            android:id="@+id/im_pair"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_pair"
+            />
+
+        <ImageView
+            android:id="@+id/im_vibe_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_80"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/margin_20"
+            android:src="@mipmap/ic_vibe_logo"
+            />
+
+    </RelativeLayout>
 
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_30"

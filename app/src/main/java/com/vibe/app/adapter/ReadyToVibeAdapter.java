@@ -24,7 +24,15 @@ public class ReadyToVibeAdapter extends BaseRecyclerViewAdapter<VibeType> {
     @Override
     protected void fillData(BaseViewHolderHelper helper, int position, VibeType model) {
         helper.setText(R.id.tv_name, model.getName());
-        helper.setImageResource(R.id.im_vibe_icon, model.getIcon());
+        if (model.getMode() == 0) {
+            helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_pulse);
+        } else if (model.getMode() == 1) {
+            helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_vibration);
+        } else if (model.getMode() == 2) {
+            helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_wave);
+        } else {
+            helper.setImageResource(R.id.im_vibe_icon, R.mipmap.ic_choice_orthovybe);
+        }
         if (position == 0) {
             helper.getView(R.id.v_line).setVisibility(View.GONE);
         } else {

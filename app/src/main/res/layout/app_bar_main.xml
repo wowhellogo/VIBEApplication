@@ -44,6 +44,7 @@
             >
 
             <ImageView
+                android:id="@+id/im_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/selector_home_pause"
@@ -51,6 +52,7 @@
                 />
 
             <ImageView
+                android:id="@+id/im_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/selector_home_start"

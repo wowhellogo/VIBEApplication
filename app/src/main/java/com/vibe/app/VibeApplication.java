@@ -3,8 +3,6 @@ package com.vibe.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -12,9 +10,8 @@ import com.hao.common.exception.ApiException;
 import com.hao.common.manager.AppManager;
 import com.hao.common.rx.RxBus;
 import com.hao.common.rx.RxEvent;
-import com.hao.common.utils.UmengUtil;
 import com.orhanobut.logger.Logger;
-import com.squareup.leakcanary.LeakCanary;
+import com.polidea.rxandroidble.RxBleClient;
 import com.squareup.leakcanary.RefWatcher;
 import com.vibe.app.database.AbstractDatabaseManager;
 
@@ -28,6 +25,8 @@ import com.vibe.app.database.AbstractDatabaseManager;
 
 public class VibeApplication extends Application implements AppManager.Delegate {
     private RefWatcher mRefWatcher;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,6 +41,7 @@ public class VibeApplication extends Application implements AppManager.Delegate 
         RxBus.toObservable(RxEvent.AppEnterBackgroundEvent.class).subscribe(appEnterBackgroundEvent -> appEnterBackground());
 
     }
+
     @Override
     public void refWatcherWatchFragment(Fragment fragment) {
         mRefWatcher.watch(fragment);

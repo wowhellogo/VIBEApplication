@@ -5,12 +5,14 @@ import android.support.v7.widget.RecyclerView;
 
 import com.hao.common.base.BaseActivity;
 import com.hao.common.base.TopBarType;
+import com.hao.common.rx.RxBus;
 import com.hao.common.rx.RxUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.utils.ViewUtils;
 import com.vibe.app.adapter.ReadyToVibeAdapter;
 import com.vibe.app.database.AbstractDatabaseManager;
 import com.vibe.app.model.VibeType;
+import com.vibe.app.model.event.UpdateVibeTypeEvent;
 
 import java.util.List;
 
@@ -30,7 +32,6 @@ public class ReadyToVibeActivity extends BaseActivity {
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private ReadyToVibeAdapter mAdapter;
-
 
 
     @Override
@@ -78,6 +79,13 @@ public class ReadyToVibeActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
+        RxBus.toObservableAndBindToLifecycle(UpdateVibeTypeEvent.class, this)
+                .subscribe(new Action1<UpdateVibeTypeEvent>() {
+                    @Override
+                    public void call(UpdateVibeTypeEvent updateVibeTypeEvent) {
+                        initData();
+                    }
+                });
         mAdapter.setOnRVItemClickListener((parent, itemView, position) ->
                 mSwipeBackHelper.forward(UpdateVibeTypeActivity.newIntent(this, mAdapter.getItem(position))));
     }

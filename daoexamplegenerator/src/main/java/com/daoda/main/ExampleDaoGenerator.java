@@ -19,10 +19,10 @@ public class ExampleDaoGenerator {
         Entity vibeTypeTable = schema.addEntity("VibeType");// 表名
         vibeTypeTable.addLongProperty("_id").primaryKey().autoincrement().index();//主键
         vibeTypeTable.addStringProperty("name");
-        vibeTypeTable.addIntProperty("icon");
-        vibeTypeTable.addIntProperty("time");
-        vibeTypeTable.addIntProperty("rate");
-        vibeTypeTable.addBooleanProperty("isSelected");//选中
+        vibeTypeTable.addIntProperty("mode");//模式
+        vibeTypeTable.addIntProperty("time");//时长
+        vibeTypeTable.addIntProperty("rate");//强度
+        vibeTypeTable.addBooleanProperty("selected");//选中
 
         //自慰棒自慰纪录表
         Entity vibeRecordTable = schema.addEntity("VibeRecord");

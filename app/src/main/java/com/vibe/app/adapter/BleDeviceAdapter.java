@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.hao.common.adapter.BaseRecyclerViewAdapter;
 import com.hao.common.adapter.BaseViewHolderHelper;
+import com.hao.common.utils.StringUtil;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.vibe.app.R;
 
@@ -13,6 +14,8 @@ import com.vibe.app.R;
  */
 
 public class BleDeviceAdapter extends BaseRecyclerViewAdapter<RxBleDevice> {
+    public final static String VIBE_DEVICE = "Vibe-test";
+
     public BleDeviceAdapter(RecyclerView recyclerView) {
         super(recyclerView);
     }
@@ -30,6 +33,11 @@ public class BleDeviceAdapter extends BaseRecyclerViewAdapter<RxBleDevice> {
             helper.getView(R.id.v_line).setVisibility(View.GONE);
         } else {
             helper.getView(R.id.v_line).setVisibility(View.VISIBLE);
+        }
+        if (!StringUtil.isEmpty(model.getName()) && VIBE_DEVICE.equals(model.getName())) {
+            helper.getView(R.id.im_vibe_icon).setVisibility(View.VISIBLE);
+        } else {
+            helper.getView(R.id.im_vibe_icon).setVisibility(View.GONE);
         }
     }
 }

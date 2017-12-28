@@ -28,5 +28,7 @@ public interface Constant {
     UUID NOTIFY_SERVICE2_UUID_NOFIFY = UUID.fromString("00001531-1212-efde-1523-785feabcd123");
     UUID RED_SERVICE2_UUID_NOFIFY = UUID.fromString("00001534-1212-efde-1523-785feabcd123");
 
+    String MAC="mac";
+    String DEVICE_NAME="deviceName";
 
 }

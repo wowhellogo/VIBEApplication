@@ -1,5 +1,6 @@
 package com.vibe.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,7 +22,6 @@ import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.functions.Func2;
 
 /**
  * @author linguoding
@@ -96,7 +96,7 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
             @Override
             public void onClick(View view) {
                 sendCMD(new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_TIME_DURATION)
-                        .setContent(0x01,0x00).builder().dataPackage());
+                        .setContent(0x01, 0x00).builder().dataPackage());
             }
         });
     }
@@ -146,7 +146,7 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                         observable.subscribe(new Action1<byte[]>() {
                             @Override
                             public void call(byte[] bytes) {
-                                Logger.e("返回的内容："+ByteUtil.bytesToHexString(bytes));
+                                Logger.e("返回的内容：" + ByteUtil.bytesToHexString(bytes));
                             }
                         });
                     }
@@ -163,19 +163,20 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                 }).subscribe(new Action1<byte[]>() {
                     @Override
                     public void call(byte[] bytes) {
-                        Logger.e("电量："+ByteUtil.bytesToHexString(bytes));
-                        Logger.e(ByteUtil.getString(bytes,"utf-8"));
+                        Logger.e("电量：" + ByteUtil.bytesToHexString(bytes));
+                        Logger.e(ByteUtil.getString(bytes, "utf-8"));
                     }
                 });
     }
 
 
     public void sendCMD(byte[] bts) {
+        Logger.e("发送的指令：" + ByteUtil.bytesToHexString(bts));
         mRxBleConnection.writeCharacteristic(Constant.WRITE_SERVICE_UUID_COMMUNICATION, bts)
                 .subscribe(new Action1<byte[]>() {
                     @Override
                     public void call(byte[] bytes) {
-                        Logger.e("发送的指令：" + ByteUtil.bytesToHexString(bytes));
+
                     }
                 });
     }
@@ -220,22 +221,18 @@ public class MainTestActivity extends BaseDataBindingActivity<RxPresenter, Activ
                 .setContent(0x00, 0x01)
                 .builder().dataPackage();
     }
+
     public byte[] setMode3() {
         return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_MODE)
                 .setContent(0x00, 0x02)
                 .builder().dataPackage();
     }
 
-    public byte[] setStrength(){
+    public byte[] setStrength() {
         return new BleTransfersData.Builder().setCmd(BleTransfersData.Cmd.SET_STRENGTH)
-                .setContent(0x00,0x01)
+                .setContent(0x00, 0x01)
                 .builder().dataPackage();
     }
-
-
-
-
-
 
 
 }

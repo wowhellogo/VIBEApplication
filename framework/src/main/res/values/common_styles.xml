@@ -166,9 +166,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@android:color/white</item>
-        <item name="bgatitlebar_leftAndRightTextColor">@color/textPrimary</item>
+        <item name="bgatitlebar_leftAndRightTextColor">@color/colorPrimary</item>
         <item name="bgatitlebar_leftAndRightTextSize">@dimen/text_size_14</item>
-        <item name="bgatitlebar_titleTextColor">@color/textPrimary</item>
+        <item name="bgatitlebar_titleTextColor">@color/colorPrimary</item>
         <item name="bgatitlebar_titleTextSize">@dimen/text_size_18</item>
         <item name="bgatitlebar_leftAndRightPadding">@dimen/size_level2</item>
         <item name="bgatitlebar_titleDrawablePadding">@dimen/size_level1</item>

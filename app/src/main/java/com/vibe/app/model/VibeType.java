@@ -11,10 +11,10 @@ public class VibeType implements Serializable {
 
     private Long _id;
     private String name;
-    private Integer icon;
+    private Integer mode;
     private Integer time;
     private Integer rate;
-    private Boolean isSelected;
+    private Boolean selected;
 
     public VibeType() {
     }
@@ -23,13 +23,13 @@ public class VibeType implements Serializable {
         this._id = _id;
     }
 
-    public VibeType(Long _id, String name, Integer icon, Integer time, Integer rate, Boolean isSelected) {
+    public VibeType(Long _id, String name, Integer mode, Integer time, Integer rate, Boolean selected) {
         this._id = _id;
         this.name = name;
-        this.icon = icon;
+        this.mode = mode;
         this.time = time;
         this.rate = rate;
-        this.isSelected = isSelected;
+        this.selected = selected;
     }
 
     public Long get_id() {
@@ -48,12 +48,12 @@ public class VibeType implements Serializable {
         this.name = name;
     }
 
-    public Integer getIcon() {
-        return icon;
+    public Integer getMode() {
+        return mode;
     }
 
-    public void setIcon(Integer icon) {
-        this.icon = icon;
+    public void setMode(Integer mode) {
+        this.mode = mode;
     }
 
     public Integer getTime() {
@@ -72,12 +72,12 @@ public class VibeType implements Serializable {
         this.rate = rate;
     }
 
-    public Boolean getIsSelected() {
-        return isSelected;
+    public Boolean getSelected() {
+        return selected;
     }
 
-    public void setIsSelected(Boolean isSelected) {
-        this.isSelected = isSelected;
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
 }

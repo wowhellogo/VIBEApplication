@@ -25,10 +25,10 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
     public static class Properties {
         public final static Property _id = new Property(0, Long.class, "_id", true, "_ID");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Icon = new Property(2, Integer.class, "icon", false, "ICON");
+        public final static Property Mode = new Property(2, Integer.class, "mode", false, "MODE");
         public final static Property Time = new Property(3, Integer.class, "time", false, "TIME");
         public final static Property Rate = new Property(4, Integer.class, "rate", false, "RATE");
-        public final static Property IsSelected = new Property(5, Boolean.class, "isSelected", false, "IS_SELECTED");
+        public final static Property Selected = new Property(5, Boolean.class, "selected", false, "SELECTED");
     };
 
 
@@ -46,10 +46,10 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"VIBE_TYPE\" (" + //
                 "\"_ID\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: _id
                 "\"NAME\" TEXT," + // 1: name
-                "\"ICON\" INTEGER," + // 2: icon
+                "\"MODE\" INTEGER," + // 2: mode
                 "\"TIME\" INTEGER," + // 3: time
                 "\"RATE\" INTEGER," + // 4: rate
-                "\"IS_SELECTED\" INTEGER);"); // 5: isSelected
+                "\"SELECTED\" INTEGER);"); // 5: selected
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_VIBE_TYPE__ID ON VIBE_TYPE" +
                 " (\"_ID\");");
@@ -76,9 +76,9 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
             stmt.bindString(2, name);
         }
  
-        Integer icon = entity.getIcon();
-        if (icon != null) {
-            stmt.bindLong(3, icon);
+        Integer mode = entity.getMode();
+        if (mode != null) {
+            stmt.bindLong(3, mode);
         }
  
         Integer time = entity.getTime();
@@ -91,9 +91,9 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
             stmt.bindLong(5, rate);
         }
  
-        Boolean isSelected = entity.getIsSelected();
-        if (isSelected != null) {
-            stmt.bindLong(6, isSelected ? 1L: 0L);
+        Boolean selected = entity.getSelected();
+        if (selected != null) {
+            stmt.bindLong(6, selected ? 1L: 0L);
         }
     }
 
@@ -109,10 +109,10 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
         VibeType entity = new VibeType( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // _id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // icon
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // mode
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // time
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // rate
-            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // isSelected
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // selected
         );
         return entity;
     }
@@ -122,10 +122,10 @@ public class VibeTypeDao extends AbstractDao<VibeType, Long> {
     public void readEntity(Cursor cursor, VibeType entity, int offset) {
         entity.set_id(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setIcon(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setMode(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setTime(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setRate(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setIsSelected(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
+        entity.setSelected(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     /** @inheritdoc */

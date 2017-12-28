@@ -14,7 +14,7 @@ import android.view.WindowManager;
 /**
  * Created by loongggdroid on 2016/3/21.
  */
-public class LoongggAlarmReceiver extends BroadcastReceiver {
+public class VibeAlarmReceiver extends BroadcastReceiver {
     private MediaPlayer mediaPlayer;
     private Vibrator vibrator;
 

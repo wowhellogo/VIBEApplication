@@ -11,4 +11,15 @@
     <string name="title_history">history</string>
     <string name="set_successfully">Set successfully</string>
     <string name="set_fail">set fail</string>
+
+    <string name="mon">MonDay</string>
+    <string name="tue">Tuesday</string>
+    <string name="wed">Wednesday</string>
+    <string name="thu">Thursday</string>
+    <string name="fri">Friday</string>
+    <string name="sat">Saturday</string>
+    <string name="sun">Sunday</string>
+    <string name="cycle_sure">Sure</string>
+    <string name="vibration">VIBRATION</string>
+    <string name="ring">RING</string>
 </resources>

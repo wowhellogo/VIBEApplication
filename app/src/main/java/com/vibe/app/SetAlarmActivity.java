@@ -99,7 +99,6 @@ public class SetAlarmActivity extends BaseActivity implements View.OnClickListen
                         .setLabel("year", "month", "day", "hours", "mins", "seconds")
                         .setSubmitText("confirm")
                         .setCancelText("cancel")
-
                         .build()
                         .show();
             }

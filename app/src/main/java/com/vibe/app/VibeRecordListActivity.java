@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
-import com.hao.common.adapter.BaseDivider;
 import com.hao.common.base.BaseActivity;
 import com.hao.common.base.TopBarType;
 import com.hao.common.rx.RxUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.utils.ViewUtils;
 import com.vibe.app.adapter.VibeRecordAdapter;
+import com.vibe.app.dao.VibeRecordDao;
 import com.vibe.app.database.AbstractDatabaseManager;
 import com.vibe.app.model.VibeRecord;
 
@@ -54,7 +54,7 @@ public class VibeRecordListActivity extends BaseActivity implements SwipeRefresh
     }
 
     private void initData() {
-        Observable.just(mDatabaseManager.loadAll())
+        Observable.just(mDatabaseManager.getQueryBuilder().orderDesc(VibeRecordDao.Properties.CreateDate).list())
                 .compose(RxUtil.applySchedulersJobUI())
                 .compose(bindToLifecycle())
                 .subscribe(vibeRecords -> {

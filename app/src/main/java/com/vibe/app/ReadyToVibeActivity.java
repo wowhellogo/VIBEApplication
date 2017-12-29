@@ -10,6 +10,8 @@ import com.hao.common.rx.RxUtil;
 import com.hao.common.utils.ToastUtil;
 import com.hao.common.utils.ViewUtils;
 import com.vibe.app.adapter.ReadyToVibeAdapter;
+import com.vibe.app.dao.VibeRecordDao;
+import com.vibe.app.dao.VibeTypeDao;
 import com.vibe.app.database.AbstractDatabaseManager;
 import com.vibe.app.model.VibeType;
 import com.vibe.app.model.event.UpdateVibeTypeEvent;

@@ -51,7 +51,7 @@ public class ReminderListActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setTitle("set reminder");
+        setTitle("Set reminder");
         mRecyclerView = (RecyclerView) getViewById(R.id.recycler_view);
         mSwipeRefreshLayout= (SwipeRefreshLayout) getViewById(R.id.swipe_refresh_layout);
         ViewUtils.initVerticalLinearRecyclerView(this, mRecyclerView);

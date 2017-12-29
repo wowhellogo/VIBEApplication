@@ -47,7 +47,7 @@ public class BleDeviceListActivity extends BaseLoadActivity<LoadPresenter, RxBle
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        setTitle("explore vibes");
+        setTitle(getString(R.string.explore_vibe));
         setLoadingMoreEnabled(false);
         mLoadingLayout.setStatus(LoadingLayout.Success);
         rxBleClient = RxBleClient.create(this);

@@ -71,7 +71,7 @@ public class SetAlarmActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setTitle("set alarm");
+        setTitle("Set alarm");
         mTitleBar.setRightText("save");
         mReminder = new Reminder();
         allLayout = (LinearLayout) findViewById(R.id.all_layout);

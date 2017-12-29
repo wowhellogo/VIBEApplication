@@ -27,7 +27,7 @@ public class AboutsActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setTitle("about");
+        setTitle(getString(R.string.about));
     }
 
     @Override

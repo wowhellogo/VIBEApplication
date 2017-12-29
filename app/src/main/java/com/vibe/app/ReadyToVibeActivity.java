@@ -49,7 +49,7 @@ public class ReadyToVibeActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setTitle("Ready to vibe");
+        setTitle(getString(R.string.ready_to_vibe));
         mAdapter = new ReadyToVibeAdapter(mRecyclerView, R.layout.item_ready_to_vibe);
         ViewUtils.initVerticalLinearRecyclerView(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);

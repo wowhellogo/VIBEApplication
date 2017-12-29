@@ -112,6 +112,11 @@ public class SetAlarmActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClickRightCtv() {
+
+        if(StringUtil.isEmpty(date_tv)){
+            ToastUtil.show(R.string.choose_the_time);
+            return;
+        }
         if (StringUtil.isEmpty(tvName)) {
             ToastUtil.show(R.string.Please_enter_the_name);
             return;

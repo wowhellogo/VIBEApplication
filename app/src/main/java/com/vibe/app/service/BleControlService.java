@@ -151,8 +151,6 @@ public class BleControlService extends Service {
         }).exists(new Func1<ScanResult, Boolean>() {
             @Override
             public Boolean call(ScanResult scanResult) {
-                Logger.e("蓝牙服务搜索：" + scanResult.getBleDevice().getName() == null ? "未知" : scanResult.getBleDevice().getName()
-                        + ":" + scanResult.getBleDevice().getMacAddress());
                 return scanResult.getBleDevice().getMacAddress().equals(SPUtil.getString(Constant.MAC));
             }
         })

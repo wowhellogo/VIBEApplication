@@ -19,6 +19,7 @@ public class SelectRemindWayPopup implements OnClickListener {
     private TextView remaind_way1, remaind_way2;
     public PopupWindow mPopupWindow;
     private SelectRemindWayPopupOnClickListener selectRemindWayPopupListener;
+    private TextView remaind_way3;
 
     public PopupWindow getmPopupWindow() {
         return mPopupWindow;
@@ -57,8 +58,11 @@ public class SelectRemindWayPopup implements OnClickListener {
 
         remaind_way1 = (TextView) view.findViewById(R.id.tv_drugway_1);
         remaind_way2 = (TextView) view.findViewById(R.id.tv_drugway_2);
+        remaind_way3 = (TextView) view.findViewById(R.id.tv_drugway_3);
+
         remaind_way1.setOnClickListener(this);
         remaind_way2.setOnClickListener(this);
+        remaind_way3.setOnClickListener(this);
         return view;
     }
 
@@ -70,6 +74,9 @@ public class SelectRemindWayPopup implements OnClickListener {
                 break;
             case R.id.tv_drugway_2:
                 selectRemindWayPopupListener.obtainMessage(1);
+                break;
+            case R.id.tv_drugway_3:
+                selectRemindWayPopupListener.obtainMessage(2);
                 break;
             default:
                 break;

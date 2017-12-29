@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/half_transparent_black"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/half_transparent_black"
+                android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -25,7 +25,7 @@
             android:gravity="center"
             android:text="@string/vibration"
             android:textColor="@color/black_33"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
         <TextView style="@style/HLine"/>
 
@@ -39,11 +39,25 @@
             android:gravity="center"
             android:text="@string/ring"
             android:textColor="@color/black_33"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
         <TextView
-            style="@style/VLine"
-            android:layout_marginBottom="20dp" />
+            style="@style/HLine"/>
+
+        <TextView
+            android:id="@+id/tv_drugway_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@null"
+            android:gravity="center"
+            android:text="@string/vibration_ring"
+            android:textColor="@color/black_33"
+            android:textSize="20sp"/>
+
+        <TextView style="@style/HLine"/>
+
     </LinearLayout>
 
 </RelativeLayout>

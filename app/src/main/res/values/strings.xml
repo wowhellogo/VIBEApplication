@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VYBEApplication</string>
+    <string name="app_name">VYBE</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,14 +12,24 @@
     <string name="set_successfully">Set successfully</string>
     <string name="set_fail">set fail</string>
 
-    <string name="mon">MonDay</string>
-    <string name="tue">Tuesday</string>
-    <string name="wed">Wednesday</string>
-    <string name="thu">Thursday</string>
-    <string name="fri">Friday</string>
-    <string name="sat">Saturday</string>
-    <string name="sun">Sunday</string>
-    <string name="cycle_sure">Sure</string>
-    <string name="vibration">VIBRATION</string>
-    <string name="ring">RING</string>
+    <string name="mon">monday</string>
+    <string name="tue">tuesday</string>
+    <string name="wed">wednesday</string>
+    <string name="thu">thursday</string>
+    <string name="fri">friday</string>
+    <string name="sat">saturday</string>
+    <string name="sun">sunday</string>
+    <string name="cycle_sure">sure</string>
+    <string name="vibration">vibration</string>
+    <string name="ring">ring</string>
+    <string name="every_day">every day</string>
+    <string name="ringing_only_once">ringing only once</string>
+    <string name="bell">bell</string>
+    <string name="vibrate">vibrate</string>
+    <string name="selection_time">selection time</string>
+    <string name="repeat">repeat</string>
+    <string name="remarks">remarks</string>
+    <string name="please_enter_the_remark">Please enter the remark</string>
+    <string name="vibration_ring">vibration+ring</string>
+    <string name="Please_enter_the_name">Please enter the name</string>
 </resources>

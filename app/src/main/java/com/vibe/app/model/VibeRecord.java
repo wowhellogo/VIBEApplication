@@ -43,13 +43,6 @@ public class VibeRecord {
         this.vibeTypeId = vibeTypeId;
     }
 
-    public VibeRecord(Integer duration, java.util.Date createDate, java.util.Date endDate, Long vibeTypeId) {
-        this.duration = duration;
-        this.createDate = createDate;
-        this.endDate = endDate;
-        this.vibeTypeId = vibeTypeId;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

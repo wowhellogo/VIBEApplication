@@ -60,14 +60,14 @@
 
         <View style="@style/HLine"/>
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/tv_languages"
             style="@style/style_setup_btn"
             android:drawableLeft="@mipmap/ic_setup_language"
             android:text="Languages"
             />
 
-        <View style="@style/HLine"/>
+        <View style="@style/HLine"/>-->
 
         <TextView
             android:id="@+id/tv_about"

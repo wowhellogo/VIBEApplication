@@ -82,10 +82,9 @@ public class BleDeviceListActivity extends BaseLoadActivity<LoadPresenter, RxBle
         //保存mac地址
         RxBleDevice device = mAdapter.getItem(position);
         if (!StringUtil.isEmpty(device.getName())
-                && device.getName().equals(BleDeviceAdapter.VIBE_DEVICE)) {
-            SPUtil.putString(Constant.MAC, device.getMacAddress());
+                && device.getName().contains(BleDeviceAdapter.VIBE_DEVICE)) {
             SPUtil.putString(Constant.DEVICE_NAME, device.getName());
-            RxBus.send(new SelectDeviceEvent());
+            RxBus.send(new SelectDeviceEvent(device.getMacAddress()));
             finish();
         } else {
             ToastUtil.show("This device is not vibe device");

@@ -14,7 +14,7 @@ import com.vibe.app.R;
  */
 
 public class BleDeviceAdapter extends BaseRecyclerViewAdapter<RxBleDevice> {
-    public final static String VIBE_DEVICE = "Vibe-test";
+    public final static String VIBE_DEVICE = "Vibe";
 
     public BleDeviceAdapter(RecyclerView recyclerView) {
         super(recyclerView);
@@ -34,7 +34,7 @@ public class BleDeviceAdapter extends BaseRecyclerViewAdapter<RxBleDevice> {
         } else {
             helper.getView(R.id.v_line).setVisibility(View.VISIBLE);
         }
-        if (!StringUtil.isEmpty(model.getName()) && VIBE_DEVICE.equals(model.getName())) {
+        if (!StringUtil.isEmpty(model.getName()) && model.getName().contains(VIBE_DEVICE)) {
             helper.getView(R.id.im_vibe_icon).setVisibility(View.VISIBLE);
         } else {
             helper.getView(R.id.im_vibe_icon).setVisibility(View.GONE);

@@ -39,7 +39,7 @@ public class ExampleDaoGenerator {
         Entity reminderTable = schema.addEntity("Reminder");
         reminderTable.addLongProperty("_id").primaryKey().autoincrement().index();//主键
         reminderTable.addStringProperty("name");
-        reminderTable.addIntProperty("flag");//标识，0：一次性的闹钟，1：每天的闹钟，2：每周提醒的闹钟
+        reminderTable.addIntProperty("flag");//标识，0：每天的闹钟,1:一次性的闹钟，2：每周提醒的闹钟
         reminderTable.addIntProperty("hour");
         reminderTable.addIntProperty("minute");
         reminderTable.addIntProperty("week");//week=0表示一次性闹钟或者按天的周期性闹钟，非0 的情况下是几就代表以周为周期性的周几的闹钟

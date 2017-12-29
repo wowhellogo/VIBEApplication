@@ -86,6 +86,12 @@
             android:configChanges="orientation"
             android:launchMode="singleTop" />
 
+        <!--关于-->
+        <activity android:name=".AboutsActivity"
+                  android:configChanges="orientation"
+                  android:launchMode="singleTop"
+            />
+
 
         <service
             android:name=".service.BleControlService"

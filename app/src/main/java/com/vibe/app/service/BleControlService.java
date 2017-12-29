@@ -59,6 +59,7 @@ public class BleControlService extends Service {
 
     public final static int CONNECT = 1;
     public final static int DISCONNECT = 2;
+    public final static int RECONNECT = 3;
     public final static String OPERATION = "operation";
     public final static String CMD = "cmd";
     public final static String RESULT = "result";
@@ -79,7 +80,6 @@ public class BleControlService extends Service {
     private BleControlReceiver mBleControlReceiver;
 
 
-
     /**
      * 主线程发送设备工作状态，电量的广播
      */
@@ -92,8 +92,8 @@ public class BleControlService extends Service {
 
     }
 
-    private void setConnectionStateListener() {
-        mRxBleClient.getBleDevice(SPUtil.getString(Constant.MAC)).observeConnectionStateChanges()
+    private void setConnectionStateListener(String mac) {
+        mRxBleClient.getBleDevice(mac).observeConnectionStateChanges()
                 .subscribe(
                         connectionState -> {
                             switch (connectionState) {
@@ -134,8 +134,10 @@ public class BleControlService extends Service {
     }
 
 
-    private void scanConnect() {
+    private void scanConnect(String mac) {
         Logger.e("自动搜索连接...");
+        SPUtil.putString(Constant.MAC, mac);
+        setConnectionStateListener(mac);
         subscription = mRxBleClient.scanBleDevices(new ScanSettings.Builder()
                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                         .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
@@ -145,18 +147,20 @@ public class BleControlService extends Service {
             @Override
             public void call() {
                 Logger.e("开始搜索...");
-            }}).exists(new Func1<ScanResult, Boolean>() {
-                    @Override
-                    public Boolean call(ScanResult scanResult) {
-                        Logger.e(scanResult.toString());
-                        return scanResult.getBleDevice().getMacAddress().equals(SPUtil.getString(Constant.MAC));
-                    }
-                })
+            }
+        }).exists(new Func1<ScanResult, Boolean>() {
+            @Override
+            public Boolean call(ScanResult scanResult) {
+                Logger.e("蓝牙服务搜索：" + scanResult.getBleDevice().getName() == null ? "未知" : scanResult.getBleDevice().getName()
+                        + ":" + scanResult.getBleDevice().getMacAddress());
+                return scanResult.getBleDevice().getMacAddress().equals(SPUtil.getString(Constant.MAC));
+            }
+        })
                 .flatMap(new Func1<Boolean, Observable<RxBleConnection>>() {
                     @Override
                     public Observable<RxBleConnection> call(Boolean aBoolean) {
                         //连接
-                        return mRxBleClient.getBleDevice(SPUtil.getString(Constant.MAC)).establishConnection(false);
+                        return mRxBleClient.getBleDevice(mac).establishConnection(false);
                     }
                 }).flatMap(new Func1<RxBleConnection, Observable<Observable<byte[]>>>() {
                     @Override
@@ -303,10 +307,10 @@ public class BleControlService extends Service {
         Logger.e("GrayService->onStartCommand");
         mRxBleClient = RxBleClient.create(this);
         initHandler();
+        Logger.e("连接设备：" + SPUtil.getString(Constant.MAC) + "连接对象：" + mRxBleConnection);
+        registerBleControlReceiver();
         if (!StringUtil.isEmpty(SPUtil.getString(Constant.MAC)) && mRxBleConnection == null) {
-            scanConnect();
-            registerBleControlReceiver();
-            setConnectionStateListener();
+            scanConnect(SPUtil.getString(Constant.MAC));
         }
         if (Build.VERSION.SDK_INT < 18) {
             startForeground(GRAY_SERVICE_ID, new Notification());//API < 18 ，此方法能有效隐藏Notification上的图标
@@ -387,7 +391,7 @@ public class BleControlService extends Service {
                     sendCMD(intent.getByteArrayExtra(CMD));
                     break;
                 case BLE_OPERATION_ACTION:
-                    operationBle(intent.getIntExtra(OPERATION, 0));
+                    operationBle(intent.getIntExtra(OPERATION, 0), intent.getStringExtra(Constant.MAC));
                     break;
                 default:
                     break;
@@ -400,13 +404,18 @@ public class BleControlService extends Service {
      *
      * @param operation 1：连接，2：断开
      */
-    private void operationBle(int operation) {
+    private void operationBle(int operation, String mac) {
         if (operation == CONNECT) {
-            scanConnect();
+            scanConnect(mac);
         } else if (operation == DISCONNECT) {
             if (subscription != null && !subscription.isUnsubscribed()) {
                 subscription.unsubscribe();
             }
+        } else if (operation == RECONNECT) {
+            if (subscription != null && !subscription.isUnsubscribed()) {
+                subscription.unsubscribe();
+            }
+            scanConnect(mac);
         }
     }
 

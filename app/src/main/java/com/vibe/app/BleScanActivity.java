@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.hao.common.base.BaseActivity;
+import com.hao.common.utils.SPUtil;
 import com.hao.common.utils.StatusBarUtil;
-import com.hao.common.utils.ToastUtil;
 import com.orhanobut.logger.Logger;
 import com.polidea.rxandroidble.RxBleConnection;
+import com.vibe.app.model.Constant;
 import com.vibe.app.service.BleControlService;
 import com.vibe.app.utils.ByteUtil;
 
@@ -54,7 +55,7 @@ public class BleScanActivity extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         registerReceiver();
-        MainActivity.sendOperationBroadcast(this, BleControlService.BLE_OPERATION_ACTION, BleControlService.CONNECT);
+        MainActivity.sendOperationBroadcast(this, BleControlService.BLE_OPERATION_ACTION, BleControlService.RECONNECT, SPUtil.getString(Constant.MAC));
     }
 
 

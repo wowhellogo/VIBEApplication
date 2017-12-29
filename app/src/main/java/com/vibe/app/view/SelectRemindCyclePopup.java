@@ -93,45 +93,59 @@ public class SelectRemindCyclePopup implements OnClickListener {
                 selectRemindCyclePopupListener.obtainMessage(8, "");
                 break;
             case R.id.tv_drugcycle_1:
-                if (tv_mon.getCompoundDrawables()[2] == null)
+                if (tv_mon.getCompoundDrawables()[2] == null) {
                     tv_mon.setCompoundDrawables(null, null, nav_right, null);
-                else tv_mon.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_mon.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(0, "");
                 break;
             case R.id.tv_drugcycle_2:
-                if (tv_tue.getCompoundDrawables()[2] == null)
+                if (tv_tue.getCompoundDrawables()[2] == null) {
                     tv_tue.setCompoundDrawables(null, null, nav_right, null);
-                else tv_tue.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_tue.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(1, "");
                 break;
             case R.id.tv_drugcycle_3:
-                if (tv_wed.getCompoundDrawables()[2] == null)
+                if (tv_wed.getCompoundDrawables()[2] == null) {
                     tv_wed.setCompoundDrawables(null, null, nav_right, null);
-                else tv_wed.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_wed.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(2, "");
                 break;
             case R.id.tv_drugcycle_4:
-                if (tv_thu.getCompoundDrawables()[2] == null)
+                if (tv_thu.getCompoundDrawables()[2] == null) {
                     tv_thu.setCompoundDrawables(null, null, nav_right, null);
-                else tv_thu.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_thu.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(3, "");
                 break;
             case R.id.tv_drugcycle_5:
-                if (tv_fri.getCompoundDrawables()[2] == null)
+                if (tv_fri.getCompoundDrawables()[2] == null) {
                     tv_fri.setCompoundDrawables(null, null, nav_right, null);
-                else tv_fri.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_fri.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(4, "");
                 break;
             case R.id.tv_drugcycle_6:
-                if (tv_sat.getCompoundDrawables()[2] == null)
+                if (tv_sat.getCompoundDrawables()[2] == null) {
                     tv_sat.setCompoundDrawables(null, null, nav_right, null);
-                else tv_sat.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_sat.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(5, "");
                 break;
             case R.id.tv_drugcycle_7:
-                if (tv_sun.getCompoundDrawables()[2] == null)
+                if (tv_sun.getCompoundDrawables()[2] == null) {
                     tv_sun.setCompoundDrawables(null, null, nav_right, null);
-                else tv_sun.setCompoundDrawables(null, null, null, null);
+                } else {
+                    tv_sun.setCompoundDrawables(null, null, null, null);
+                }
                 selectRemindCyclePopupListener.obtainMessage(6, "");
                 break;
             case R.id.tv_drugcycle_sure:

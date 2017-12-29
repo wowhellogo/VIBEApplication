@@ -18,12 +18,11 @@
         <TextView
             android:id="@+id/tv_drugcycle_once"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:padding="@dimen/margin_5"
             android:drawableRight="@null"
-            android:text="Ringing only once"
+            android:text="@string/ringing_only_once"
             android:textColor="@color/black_33"
             android:textSize="20sp"/>
 
@@ -32,12 +31,11 @@
         <TextView
             android:id="@+id/tv_drugcycle_0"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:padding="@dimen/margin_5"
             android:drawableRight="@null"
-            android:text="Every day"
+            android:text="@string/every_day"
             android:textColor="@color/black_33"
             android:textSize="20sp"/>
 
@@ -46,11 +44,10 @@
         <TextView
             android:id="@+id/tv_drugcycle_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:drawableRight="@null"
-            android:padding="@dimen/margin_5"
             android:text="@string/mon"
             android:textColor="@color/black_33"
             android:textSize="20sp"/>
@@ -60,10 +57,9 @@
         <TextView
             android:id="@+id/tv_drugcycle_2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:padding="@dimen/margin_5"
             android:drawableRight="@null"
             android:text="@string/tue"
             android:textColor="@color/black_33"
@@ -74,10 +70,9 @@
         <TextView
             android:id="@+id/tv_drugcycle_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:padding="@dimen/margin_5"
             android:drawableRight="@null"
             android:text="@string/wed"
             android:textColor="@color/black_33"
@@ -88,11 +83,10 @@
         <TextView
             android:id="@+id/tv_drugcycle_4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:drawableRight="@null"
-            android:padding="@dimen/margin_5"
             android:text="@string/thu"
             android:textColor="@color/black_33"
             android:textSize="20sp"/>
@@ -102,11 +96,10 @@
         <TextView
             android:id="@+id/tv_drugcycle_5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:drawableRight="@null"
-            android:padding="@dimen/margin_5"
             android:text="@string/fri"
             android:textColor="@color/black_33"
             android:textSize="20sp"/>
@@ -116,7 +109,7 @@
         <TextView
             android:id="@+id/tv_drugcycle_6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:drawableRight="@null"
@@ -129,9 +122,8 @@
         <TextView
             android:id="@+id/tv_drugcycle_7"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="10dp"
-            android:padding="@dimen/margin_5"
             android:layout_marginTop="10dp"
             android:drawableRight="@null"
             android:text="@string/sun"

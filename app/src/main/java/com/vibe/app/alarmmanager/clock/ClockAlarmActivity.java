@@ -38,7 +38,7 @@ public class ClockAlarmActivity extends Activity {
 
         final SimpleDialog dialog = new SimpleDialog(this, R.style.Theme_dialog);
         dialog.show();
-        dialog.setTitle("Alarm Remind");
+        dialog.setTitle("alarm remind");
         dialog.setMessage(message);
         dialog.setClickListener(new View.OnClickListener() {
             @Override

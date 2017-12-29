@@ -13,14 +13,13 @@ import com.hao.common.utils.SPUtil;
 import com.hao.common.utils.StatusBarUtil;
 import com.hao.common.utils.StringUtil;
 import com.hao.common.utils.ToastUtil;
+import com.hao.common.widget.titlebar.TitleBar;
 import com.orhanobut.logger.Logger;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.vibe.app.model.Constant;
 import com.vibe.app.model.event.SelectDeviceEvent;
 import com.vibe.app.service.BleControlService;
 import com.vibe.app.utils.ByteUtil;
-
-import rx.functions.Action1;
 
 /**
  * @author Administrator
@@ -49,12 +48,14 @@ public class PairToVibeActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         imVibeDevice = (ImageView) getViewById(R.id.im_vibe_device);
+        mTitleBar = (TitleBar) getViewById(R.id.title_bar);
     }
 
     @Override
     protected void setListener() {
-        RxBus.toObservableAndBindToLifecycle(SelectDeviceEvent.class,this)
-                .subscribe(selectDeviceEvent -> MainActivity.sendOperationBroadcast(this,BleControlService.BLE_OPERATION_ACTION,BleControlService.CONNECT));
+        RxBus.toObservableAndBindToLifecycle(SelectDeviceEvent.class, this)
+                .subscribe(selectDeviceEvent ->
+                        MainActivity.sendOperationBroadcast(this, BleControlService.BLE_OPERATION_ACTION, BleControlService.RECONNECT, selectDeviceEvent.mac));
 
         getViewById(R.id.tv_exlore).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,7 @@ public class PairToVibeActivity extends BaseActivity {
                 }
             }
         });
+        mTitleBar.setDelegate(this);
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.vibe.app.dao.VibeTypeDao;
 import com.vibe.app.database.AbstractDatabaseManager;
 import com.vibe.app.model.BleTransfersData;
+import com.vibe.app.model.Constant;
 import com.vibe.app.model.Reminder;
 import com.vibe.app.model.VibeRecord;
 import com.vibe.app.model.VibeType;
@@ -71,8 +72,6 @@ public class MainActivity extends BaseActivity {
     TextView mTvSetReminder;
     @Bind(R.id.tv_history)
     TextView mTvHistory;
-    @Bind(R.id.tv_languages)
-    TextView mTvLanguages;
     @Bind(R.id.tv_about)
     TextView mTvAbout;
     private TitleBar mTitleBar;
@@ -137,7 +136,6 @@ public class MainActivity extends BaseActivity {
                     .compose(RxUtil.applySchedulersJobUI())
                     .compose(bindToLifecycle())
                     .subscribe(aBoolean -> {
-                        ToastUtil.show("初始化成功");
                         SPUtil.putBoolean("insert", true);
                     });
         }
@@ -177,7 +175,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv_pair_to_vibe, R.id.tv_ready_to_vieb, R.id.tv_set_reminder, R.id.tv_history, R.id.tv_languages, R.id.tv_about, R.id.im_start, R.id.im_pause})
+    @OnClick({R.id.tv_pair_to_vibe, R.id.tv_ready_to_vieb, R.id.tv_set_reminder, R.id.tv_history, R.id.tv_about, R.id.im_start, R.id.im_pause})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_pair_to_vibe:
@@ -196,10 +194,8 @@ public class MainActivity extends BaseActivity {
                 mSwipeBackHelper.forward(VibeRecordListActivity.class);
                 onClickLeftCtv();
                 break;
-            case R.id.tv_languages:
-                onClickLeftCtv();
-                break;
             case R.id.tv_about:
+                mSwipeBackHelper.forward(AboutsActivity.class);
                 onClickLeftCtv();
                 break;
             case R.id.im_start:
@@ -267,7 +263,7 @@ public class MainActivity extends BaseActivity {
                 case BleControlService.RECEIVE_JOB_STATE:
                     byte[] result = intent.getExtras().getByteArray("result");
                     if (StringUtil.isEmpty(mTitleBar.getRightCtv().getText())) {
-                        mTitleBar.setRightText("已连接");
+                        mTitleBar.setRightText("Connected");
                     }
                     Logger.e("Main----收到的结果：" + ByteUtil.bytesToHexString(result));
                     break;
@@ -317,12 +313,13 @@ public class MainActivity extends BaseActivity {
         context.sendBroadcast(intent);
     }
 
-    public static void sendOperationBroadcast(Context context, String action, int operation) {
+    public static void sendOperationBroadcast(Context context, String action, int operation, String mac) {
         Intent intent = new Intent();
         //指定发送广播的频道
         intent.setAction(action);
         //发送广播的数据
         intent.putExtra(BleControlService.OPERATION, operation);
+        intent.putExtra(Constant.MAC, mac);
         //发送
         context.sendBroadcast(intent);
     }

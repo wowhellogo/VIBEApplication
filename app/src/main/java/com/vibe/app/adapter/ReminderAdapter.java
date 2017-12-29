@@ -6,6 +6,7 @@ import com.hao.common.adapter.BaseRecyclerViewAdapter;
 import com.hao.common.adapter.BaseViewHolderHelper;
 import com.vibe.app.R;
 import com.vibe.app.model.Reminder;
+import com.vibe.app.utils.Utils;
 
 /**
  * @Package com.vibe.app.adapter
@@ -22,16 +23,17 @@ public class ReminderAdapter extends BaseRecyclerViewAdapter<Reminder> {
 
     @Override
     protected void fillData(BaseViewHolderHelper helper, int position, Reminder model) {
-        helper.setText(R.id.tv_date, model.getHour() + ":" + model.getMinute());
-        if (model.getState() == 1) {
-            helper.setText(R.id.tv_type, "Every day");
-        } else if (model.getState() == 2) {
-            helper.setText(R.id.tv_type, "Week" + model.getWeek());
-        } else {
+        helper.setText(R.id.tv_date, String.format("%s:%s", Utils.formatDate(model.getHour()), Utils.formatDate(model.getMinute())));
+        if (model.getFlag() == 1) {
             helper.setText(R.id.tv_type, "Once");
+        } else if (model.getFlag() == 2) {
+            helper.setText(R.id.tv_type, "Week" + Utils.parseRepeat(model.getWeek(), 1));
+        } else {
+            helper.setText(R.id.tv_type, "Every day");
         }
-        helper.setText(R.id.tv_reminder, model.getName());
+        helper.setText(R.id.tv_reminder, String.format("%s   %s", model.getName(), model.getTips()));
         helper.setChecked(R.id.switch1, model.getState() == 1);
         helper.setItemChildCheckedChangeListener(R.id.switch1);
     }
+
 }

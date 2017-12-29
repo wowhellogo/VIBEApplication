@@ -10,4 +10,9 @@ package com.vibe.app.model.event;
 
 
 public class SelectDeviceEvent {
+    public String mac;
+
+    public SelectDeviceEvent(String mac) {
+        this.mac = mac;
+    }
 }
